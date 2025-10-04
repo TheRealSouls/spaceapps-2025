@@ -1,11 +1,9 @@
 from flask import Flask, render_template, jsonify
 import requests
 from datetime import datetime
-import matplotlib.pyplot as plt
 from scipy.stats import norm
 import statistics
-# from dotenv import load_dotenv
-# import os
+import os
 
 
 app = Flask(__name__)

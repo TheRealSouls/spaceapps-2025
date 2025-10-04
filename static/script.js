@@ -187,3 +187,11 @@ for (let i = 0; i < 25; i++) {
 
 /* Actual data */
 
+const temperatureCelsius = document.getElementById("temperatureCelsius");
+const temperatureFahrenheit = document.getElementById("temperatureFahrenheit");
+const windSpeed = document.getElementById("windSpeed");
+const humidity = document.getElementById("humidity");
+const rainfall = document.getElementById("rainfall");
+const atmosphericPressure = document.getElementById("atmosphericPressure");
+
+const riskScore = document.getElementById("riskScore");
