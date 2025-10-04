@@ -18,26 +18,29 @@
 
         <div class="main-content">
             <div class="sidebar">
-                <section class="card">
+                <section class="card" id="eventDetails">
                     <h2>Event Details</h2>
-                    <p>box box box, STAY OUT STAY OUT STAY OUT</p>
                     <form action="#" method="get">
-                        <label>Date</label>
-                        <input type="date" id="eventDate" name="date">
-                        <label>Time</label>
-                        <input type="time" id="appt" name="appt">
+                        <span>
+                            <label>Date</label>
+                            <input type="date" id="eventDate" name="date">
+                        </span>
+                        <span>
+                            <label>Time</label>
+                            <input type="time" id="appt" name="appt">
+                        </span>
                     </form>
+
+                    <div class="map-container">
+                        <h2>Select Your Location</h2>
+                    <div id="map"></div>
+                </div>
                 </section>
 
                 <section class="card">
                     <h2><!--LIGHTBULB ICON--> Recommendations</h2>
                     <p>sorry that was Perez... Verstappen.. plus 20</p>
                 </section>
-
-                <div class="map-container">
-                    <h2>Select Your Location</h2>
-                    <div id="map"></div>
-                </div>
             </div>
 
             <div class="dashboard-main">

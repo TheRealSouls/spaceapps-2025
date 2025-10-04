@@ -15,7 +15,7 @@
   --color-text-dim: #a0a0a0;
 
   --gray: #1A1D23;
-  --light-gray: #311a1a;
+  --light-gray: #282C34;
   --info: #335DA3;
   --yellow: #ebe72a;
   --white: #DADBDD;
@@ -25,6 +25,13 @@
   --red: #D45455;
 
   --padding-base: 20px;
+
+  --indicatorv-width: 8px;
+  --indicatorv-stickout:4px;
+
+  --indicatorh-width: 70px;
+  --indicatorh-height: 25px;
+  --indicatorh-stickout:4px;
 }
 
 body {
@@ -51,7 +58,7 @@ h1 {
 h2{
   color: #f0f0f0;
   font-size: 1.1rem;
-  border-bottom: 1px solid #262626;
+  margin-bottom: 5px;
 }
 
 p, li {
@@ -76,9 +83,42 @@ p, li {
 }
 
 .card{
-  background-color: #383838;
-  padding: 20;
+  background-color: var(--light-gray);
+  padding: 20px;
   border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #64666A;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+
+form input {
+  background-color: var(--gray);
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-text-dim);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-family: 'Arial', sans-serif;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+form span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
 }
 
 /* --- Dashboard --- */
@@ -110,13 +150,43 @@ p, li {
 }
 
 .probability-card{
-  background-color: #383838;
+  background-color: var(--light-gray);
   border-radius: 8px;
+  border: 1px solid #64666A;
   padding: var(--padding-base);
   flex: 1 1 calc(33.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333% - 20px);
   min-width: 200px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  min-height: 200px;
+}
+
+.probability-card::before{
+
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(0px - var(--indicatorv-stickout));
+  width: var(--indicatorv-width);
+  height: 90%;  
+  border-radius: 2px;
+  background-color: var(--green);
+  z-index: 1;
+}
+
+.probability-card::after {
+  content: 'STATUS';
+  align-content: center;
+  position: absolute;
+  width: var(--indicatorh-width);
+  height: var(--indicatorh-height);
+  top: 0; 
+  right: calc(0px - var(--indicatorh-stickout)); 
+  transform: translateY(10px); 
+  background-color: var(--orange);
+  border-radius: 2px;
+  z-index: 1;
 }
 
 
