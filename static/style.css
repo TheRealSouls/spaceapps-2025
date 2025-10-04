@@ -29,10 +29,18 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #323232;
-  color: #f0f0f0;
+  background-color: var(--gray);
+  color: var(--white);
   margin: 0;
   padding: 20px;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-text-dim);
 }
 
 h1 {
