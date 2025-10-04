@@ -113,7 +113,7 @@ p, li {
   background-color: #383838;
   border-radius: 8px;
   padding: var(--padding-base);
-  flex: 1 1 calc(100/3% - 20px);
+  flex: 1 1 calc(33.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333% - 20px);
   min-width: 200px;
   position: relative;
   overflow: hidden;
