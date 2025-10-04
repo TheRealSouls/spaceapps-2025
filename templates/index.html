@@ -10,128 +10,133 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
-    <div class="dashboard">
-        <header>
-           <h1>Weather Wisdom</h1>
-           <p>Plan your outdoor events with confidence</p>
-        </header>
+    <div class="scaler">
+        <div class="dashboard">
+            <header>
+               <h1>Weather Wisdom</h1>
+               <p>Plan your outdoor events with confidence</p>
+            </header>
 
-        <div class="main-content">
-            <div class="sidebar">
-                <section class="card" id="eventDetails">
-                    <h2>Event Details</h2>
-                    <form action="#" method="get">
-                        <span>
-                            <label>Date</label>
-                            <input type="date" id="eventDate" name="date">
-                        </span>
-                        <span>
-                            <label>Time</label>
-                            <input type="time" id="appt" name="appt">
-                        </span>
-                    </form>
+            <div class="main-content">
+                <div class="sidebar">
+                    <section class="card" id="eventDetails">
+                        <h2>Event Details</h2>
+                        <form action="#" method="get">
+                            <span>
+                                <label>Date</label>
+                                <input type="date" id="eventDate" name="date">
+                            </span>
+                            <span>
+                                <label>Time</label>
+                                <input type="time" id="appt" name="appt">
+                            </span>
+                        </form>
 
-                    <div class="map-container">
-                        <h2>Select Your Location</h2>
-                    <div id="map"></div>
-                </div>
-                </section>
-
-                <section class="card">
-                    <h2><img src="..\media\lightbulb.png" alt="Lightbulb icon"> Recommendations</h2>
-                    <ul>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                        <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                        <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
-                    </ul>
-                </section>
-            </div>
-
-            <div class="dashboard-main">
-                <div class="risk-score">
-                    <p>Location - Day, Date</p>
-                    <h2>Moderate Risk</h2>
-                    <p>Description of weather conditions</p>
-                </div>
-
-                <div class="probabilities">
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
+                        <div class="map-container">
+                            <h2>Select Your Location</h2>
+                        <div id="map"></div>
+                    </div>
                     </section>
+
+                    <section class="card">
+                        <h2><img src="..\media\lightbulb.png" alt="Lightbulb icon"> Recommendations</h2>
+                        <ul>
+                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
+                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
+                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
+                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="dashboard-main">
+                    <div class="risk-score">
+                        <p>Location - Day, Date</p>
+                        <h2>Moderate Risk</h2>
+                        <p>Description of weather conditions</p>
+                        <p class="total-score"><span>45</span> /100</p>
+                        <p>Overall Risk Score</p>
+                    </div>
                     
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
-                    </section>
+                    <div class="probabilities">
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
+                        
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
+                        
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
 
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
-                    </section>
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
 
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
-                    </section>
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
 
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
-                    </section>
+                        <section class="probability-card">
+                            <span>
+                                <div><!-- ICON HERE --></div>
+                                <h4>Very Hot</h4>
+                            </span>
+                            <span class="percentage">
+                                35%
+                            </span>
+                            <span class="label"></span>
+                        </section>
+                    </div>
 
-                    <section class="probability-card">
-                        <span>
-                            <div><!-- ICON HERE --></div>
-                            <h4>Very Hot</h4>
-                        </span>
-                        <span class="percentage">
-                            35%
-                        </span>
-                        <span class="label"></span>
-                    </section>
-                </div>
-
-                <div class="charts">
-                    <!--TODO: charts showing previous data-->
+                    <div class="charts">
+                        <!--TODO: charts showing previous data-->
+                    </div>
                 </div>
             </div>
-        </div>
 
-    <footer>
-        <p>Copyright ExamReady (R) | For <a href="https://www.spaceappschallenge.org/">NASA SpaceApps</a></p>
-    </footer>
+        <footer>
+            <p>Copyright ExamReady (R) | For <a href="https://www.spaceappschallenge.org/">NASA SpaceApps</a></p>
+        </footer>
+        </div>
+    </div>
     <script src="../static/script.js"></script>
 </body>
 </html>
