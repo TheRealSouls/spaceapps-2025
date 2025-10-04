@@ -1,42 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Parade Shader</title>
+    <title>Weather Wisdom</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
-    <meta name="description" content="NASA SpaceApps '25 Project by ExamReady! :)">
+    <link href="../static/style.css" rel="stylesheet" type="text/css" media="all">
+    <meta name="description" content="NASA SpaceApps '25 Project by ExamReady! :D">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
     <div class="dashboard">
         <header>
-            <p>Slogam here idk</p>
+           <h1>Weather Wisdom</h1>
+           <p>Slogam here idk</p>
         </header>
 
         <div class="main-content">
             <div class="sidebar">
                 <section class="card">
-                    <h2>box 1</h2>
+                    <h2>Event Details</h2>
                     <p>box box box, STAY OUT STAY OUT STAY OUT</p>
+                    <form action="#" method="get">
+                        <label>Date</label>
+                        <input type="date" id="eventDate" name="date">
+                        <label>Time</label>
+                        <input type="time" id="appt" name="appt">
+                    </form>
                 </section>
 
                 <section class="card">
-                    <h2>box 2</h2>
+                    <h2><!--LIGHTBULB ICON--> Recommendations</h2>
                     <p>sorry that was Perez... Verstappen.. plus 20</p>
-                </section>
-
-                <section class="card">
-                    <h2>map</h2>
-                    <p>My seat, it is FULL of water. Must be the water</p>
                 </section>
             <div>
 
             <div class="dashboard">
                 <div class="risk-score">
-                    <h2>Location - Day, Date</h2>
-                    <p>text text text</p>
+                    <p>Location - Day, Date</p>
+                    <h2>Moderate Risk</h2>
+                    <p>Description of weather conditions</p>
+                </div>
+
+                <div class="map-container">
+                    <div id="map"></div>
                 </div>
             </div>
         </div>
+
+    <footer>
+        <p>Copyright ExamReady (R) | For <a href="https://www.spaceappschallenge.org/">NASA SpaceApps</a></p>
+    </footer>
+    <script src="../static/script.js"></script>
 </body>
 </html>
