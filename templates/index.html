@@ -8,12 +8,16 @@
     <meta name="description" content="NASA SpaceApps '25 Project by ExamReady! :D">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://kit.fontawesome.com/d24d18c78a.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="dashboard">
         <header>
-           <h1>Weather Wisdom</h1>
-           <p>Plan your outdoor events with confidence</p>
+            <span>
+                <h1>Weather Wisdom</h1>
+                <p>Plan your outdoor events with confidence</p>
+            </span>
+           <button onclick="toggleTheme()"><i id="theme-icon" class="fa-solid fa-sun"></i></button>
         </header>
 
         <div class="main-content">
@@ -32,7 +36,9 @@
                     </form>
 
                     <div class="map-container">
-                        <h2>Select Your Location</h2>
+                        <label>Select Your Location</label>
+                        <input type="text" id="32search" name="Seach location...">
+
                     <div id="map"></div>
                 </div>
                 </section>
@@ -52,7 +58,7 @@
                 <div class="risk-score">
                     <p>Location - Day, Date</p>
                     <h2>Moderate Risk</h2>
-                    <p>Description of weather conditions</p>
+                    <p>Some adverse conditions possible, plan accordingly.</p>
                     <p class="total-score"><span>45</span> /100</p>
                     <p>Overall Risk Score</p>
                 </div>
