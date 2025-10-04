@@ -6,3 +6,11 @@ L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=qp7uy5
 
 let marker = L.marker([53.3498, 6.2603]).addTo(map);
 
+map.on('click', function(e) {
+    lat = e.latlng.lat;
+    lng = e.latlng.lng;
+
+    marker.setLatLng([lat, lng]);
+    getResponse(lat, lng);
+});
+

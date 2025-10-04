@@ -15,7 +15,7 @@
   --color-text-dim: #a0a0a0;
 
   --gray: #1A1D23;
-  --light-gray: #383838;
+  --light-gray: #311a1a;
   --info: #335DA3;
   --yellow: #ebe72a;
   --white: #DADBDD;
@@ -86,6 +86,29 @@ p, li {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+/* Map */
+
+#map {
+  height: 300px;
+  width: 300px;
+}
+
+.probabilities{
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--padding-base);
+}
+
+.probability-card{
+  background-color: #383838;
+  border-radius: 8px;
+  padding: var(--padding-base);
+  flex: 1 1 calc(100/3% - 20px);
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
 }
 
 
