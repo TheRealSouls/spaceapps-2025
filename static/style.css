@@ -16,6 +16,7 @@
 
   --gray: #1A1D23;
   --light-gray: #282C34;
+  --light-gray-2: #3A404A;
   --info: #6390dc;
   --yellow: #ebe72a;
   --white: #DADBDD;
@@ -26,10 +27,10 @@
 
   --padding-base: 1.25rem;
 
-  --indicatorv-width: 0.5rem;
+  --indicatorv-width: 0.25rem;
   --indicatorv-stickout: 0.25rem;
 
-  --indicatorh-width: 4.375rem;
+  --indicatorh-width: 4rem;
   --indicatorh-height: 1.5625rem;
   --indicatorh-stickout: 0.25rem;
 
@@ -43,6 +44,7 @@
 
   --gray: #f5f5f5;        /* page background */
   --light-gray: #e9e9e9;  /* cards / panels */
+  --light-gray-2: #D7DCE5;
   --info: #3366cc;
   --yellow: #c7b800;
   --white: #000;
@@ -53,7 +55,7 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: var(--gray);
   color: var(--white);
 
@@ -63,6 +65,46 @@ body {
   width: 100vw;
   overflow: hidden;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Clouds animation */
+
+.clouds {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  opacity: 0.6;
+  animation: float 20s infinite linear;
+  display: block;
+}
+
+.cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+}
+
+@keyframes float {
+    0% {
+        transform: translateX(-100px);
+    }
+    100% {
+        transform: translateX(calc(100vw + 100px));
+    }
 }
 
 header {
@@ -89,7 +131,7 @@ h2 {
 
 header button {
   border: none;
-  background: var(--gray);
+  background-color: inherit;
   color: var(--white);
   cursor: pointer;
 }
@@ -99,7 +141,8 @@ p {
 }
 
 .dashboard {
-  width: var(--design-width);
+  width: 100%;
+  max-width: var(--design-width);
   height: var(--design-height);
   
   padding: var(--padding-base);
@@ -140,6 +183,18 @@ p {
   position: relative;
 }
 
+.sidebar::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background: linear-gradient(to top, var(--gray) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
 .sidebar::-webkit-scrollbar {
   display: block;
 }
@@ -167,6 +222,13 @@ form input {
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   font-family: 'Arial', sans-serif;
+  transition: all 0.3s ease;
+}
+
+form input:focus {
+  outline: none;
+  box-shadow: 0 0 8px var(--info);
+  border-color: var(--info);
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -216,10 +278,14 @@ ul {
   gap: 0.2rem;
   height: 9.375rem;
   flex-shrink: 0;
+  position: relative;
 }
 
 .total-score {
-  margin: 1rem;
+  position: absolute;
+  right: var(--padding-base);
+  top: var(--padding-base);
+  margin: 0;
   flex-shrink: 0;
 }
 
@@ -245,7 +311,7 @@ ul {
   margin: 0 auto;
 }
 
-.probabilities{
+.weather-details{
   display: flex;
   flex-wrap: wrap;
   gap: var(--padding-base);
@@ -253,6 +319,12 @@ ul {
   flex-shrink: 0;
   overflow: hidden; 
   padding: 6px;
+}
+
+.probability-card i {
+  background-color: var(--light-gray-2);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
 }
 
 .probability-card{
@@ -272,7 +344,7 @@ ul {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: calc(0px - var(--indicatorv-stickout));
+  left: 0;
   width: var(--indicatorv-width);
   height: 90%;  
   border-radius: 2px;
@@ -286,7 +358,7 @@ ul {
   width: var(--indicatorh-width);
   height: var(--indicatorh-height);
   top: 0; 
-  right: calc(0px - var(--indicatorh-stickout)); 
+  right: 0;
   transform: translateY(10px); 
   background-color: var(--orange);
   border-radius: 2px;
@@ -301,7 +373,7 @@ ul {
 
 .scroll-indicator {
   position: fixed;
-  bottom: 90px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(calc(-600px + 9.375rem));
   width: 30px;
@@ -330,12 +402,37 @@ ul {
 
 footer {
   background-color: var(--light-gray);
+  border-radius: 0.5rem;
+  border: 1px solid #64666A;
   color: var(--white);
-  width: 100%;
+  width: 105%;
   padding: 1rem 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0;
+  align-self: center;
 }
 
-footer p {
+footer p, footer a {
   color: var(--white);
+}
+
+footer a {
+  font-weight: bold;
+}
+
+#update-button {
+    background-color: var(--info);
+    color: var(--color-text-light);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+#update-button:hover {
+    background-color: #4a7bd4;
 }

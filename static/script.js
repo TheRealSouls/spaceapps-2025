@@ -1,5 +1,4 @@
 /* Light/dark mode */
-
 const themeIcon = document.getElementById("theme-icon");
 
 const toggleTheme = () => {
@@ -12,63 +11,179 @@ const toggleTheme = () => {
     }
 }
 
-/* Map */
-let map = L.map('map').setView([53.3498, 6.2603], 10)
+/* Map and map search*/
+let map = L.map('map').setView([53.3489, -6.2430], 10)
 
 L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=qp7uy5rCF4Ij9uDMupR6', {
     attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
 }).addTo(map);
 
-let marker = L.marker([53.3498, 6.2603]).addTo(map);
+let marker = L.marker([53.3489, -6.2430]).addTo(map);
 
 map.on('click', function(e) {
     lat = e.latlng.lat;
     lng = e.latlng.lng;
 
     marker.setLatLng([lat, lng]);
-    getResponse(lat, lng);
 });
 
-// Search functionality
-const searchInput = document.getElementById('location-search');
-const searchBtn = document.getElementById('search-btn');
-
-function searchLocation() {
-  const location = searchInput.value.trim();
-  if (!location) return;
-
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data && data.length > 0) {
-        const result = data[0];
-        const lat = parseFloat(result.lat);
-        const lon = parseFloat(result.lon);
-        map.setView([lat, lon], 13);
-        marker.setLatLng([lat, lon]);
-        getResponse(lat, lon);
-      }
-    })
-    .catch(error => console.error('Error searching location:', error));
+function handleSearchEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchLocation();
+    }
 }
 
-searchBtn.addEventListener('click', searchLocation);
-searchInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') searchLocation();
-});
+function searchLocation() {
+    const location = document.getElementById('location-search').value.trim();
+    if (!location) return;
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const result = data[0];
+                const lat = parseFloat(result.lat);
+                const lon = parseFloat(result.lon);
+                map.setView([lat, lon], 13);
+                marker.setLatLng([lat, lon]);
+            } else {
+                alert('Location not found. Please try a different search term.');
+            }
+        })
+        .catch(error => {
+            console.error('Error searching location:', error);
+            alert('Error searching for location. Please try again.');
+        });
+}
 
 /* Sidebar scroll indicator */
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('.sidebar');
     const indicator = document.createElement('div');
     indicator.className = 'scroll-indicator';
     sidebar.appendChild(indicator);
 
     sidebar.addEventListener('scroll', function() {
-        if(this.scrollTop > 10){
+        if (this.scrollTop > 10) {
             this.classList.add('scrolled');
         } else {
             this.classList.remove('scrolled');
         }
     });
+
+    const now = new Date();
+    const currentDate = now.toISOString().split('T')[0];
+    const currentTime = now.toTimeString().slice(0,5);
+    
+    document.getElementById('eventDate').value = currentDate;
+    document.getElementById('appt').value = currentTime;
+    
+    updateDateTimeDisplay();
 });
+
+function updateDateTimeDisplay() {
+    const dateInput = document.getElementById('eventDate');
+    const timeInput = document.getElementById('appt');
+    const dateDisplay = document.getElementById('date-display');
+    const timeDisplay = document.getElementById('time-display');
+    
+    if (dateInput.value) {
+        const date = new Date(dateInput.value);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateDisplay.textContent = date.toLocaleDateString('en-US', options);
+    } else {
+        dateDisplay.textContent = 'Day, Date';
+    }
+    
+    if (timeInput.value) {
+        const time = new Date('1970-01-01T' + timeInput.value);
+        const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: false };
+        timeDisplay.textContent = time.toLocaleTimeString('en-US', timeOptions).replace(' ', '');
+    } else {
+        timeDisplay.textContent = 'XX:XX';
+    }
+}
+
+function updateEverything() {
+    const date = document.getElementById('eventDate').value;
+    const time = document.getElementById('appt').value;
+    
+    if (!date || !time) {
+        alert('Please select both date and time.');
+        return;
+    }
+
+    updateDateTimeDisplay();
+
+    const markerLatLng = marker.getLatLng();
+    const lat = markerLatLng.lat;
+    const lng = markerLatLng.lng;
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Reverse geocoding data:', data);
+            let locationName;
+            
+            if (data && data.address) {
+                locationName = data.address.city || 
+                              data.address.town || 
+                              data.address.village || 
+                              data.address.hamlet || 
+                              data.address.suburb || 
+                              data.address.county || 
+                              data.address.state || 
+                              data.display_name.split(',')[0];
+            } else if (data && data.display_name) {
+                locationName = data.display_name.split(',')[0];
+            } else {
+                locationName = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+            }
+            
+            updateDisplayWithLocation(locationName);
+            getResponse(lat, lng);
+        })
+        .catch(error => {
+            console.error('Error getting location name:', error);
+            updateDisplayWithLocation(`Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`);
+            getResponse(lat, lng);
+        });
+}
+
+function updateDisplayWithLocation(locationName) {
+    const dateDisplay = document.getElementById('date-display').textContent;
+    const timeDisplay = document.getElementById('time-display').textContent;
+    document.getElementById('location-display').innerHTML = `${locationName} - <span id="date-display">${dateDisplay}</span> - <span id="time-display">${timeDisplay}</span>`;
+}
+
+/* Clouds */
+
+const container = document.querySelector('.clouds');
+const maxWidth = window.innerWidth;
+
+for (let i = 0; i < 25; i++) {
+    const cloud = document.createElement('div');
+    cloud.classList.add('cloud');
+
+    const width = Math.floor(Math.random() * (maxWidth / 3));
+    const height = Math.floor(width / 2);
+    cloud.style.width = `${width}px`;
+    cloud.style.height = `${height}px`;
+
+    const top = Math.floor(Math.random() * 80) + 10;
+    cloud.style.top = `${top}%`;
+
+    const left = Math.floor(Math.random() * 100);
+    cloud.style.left = `${left}%`;
+
+    const duration = Math.floor(Math.random() * 20) + 20;
+    const delay = Math.floor(Math.random() * -20);
+    cloud.style.animation = `float ${duration}s infinite linear`;
+    cloud.style.animationDelay = `${delay}s`;
+
+    container.appendChild(cloud);
+}
+
+/* Actual data */
+
