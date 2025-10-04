@@ -16,12 +16,12 @@
 
   --gray: #1A1D23;
   --light-gray: #282C34;
-  --info: #335DA3;
+  --info: #6390dc;
   --yellow: #ebe72a;
   --white: #DADBDD;
 
   --green: #24AE5A;
-  --orange: #f2994a;
+  --orange: #f78146;
   --red: #D45455;
 
   --padding-base: 20px;
@@ -39,7 +39,10 @@ body {
   background-color: var(--gray);
   color: var(--white);
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -61,14 +64,17 @@ h2{
   margin-bottom: 5px;
 }
 
-p, li {
+p {
   font-size: 0.9rem;
   color: var(--color-text-dim);
 }
 
 .dashboard {
-    max-width: 1200px;
-    margin: 0 auto;
+  width: 100%;
+  padding: 20px;
+  margin: 0;
+  flex-grow: 1;
+  box-sizing: border-box;
 }
 
 .main-content {
@@ -121,19 +127,34 @@ form span {
   text-align: center;
 }
 
+ul li::marker {
+  color: var(--info);
+  font-size: 1.3em;
+}
+
+ul {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem;
+}
+
 /* --- Dashboard --- */
-.dashboard-main{
+.dashboard-main {
   flex-grow: 1;
 }
 
 .risk-score {
-  background-color: #383838;
+  background: linear-gradient(135deg, #4F4637, #343434);
   padding: var(--padding-base);
   border-radius: 8px;
   margin-bottom: var(--padding-base);
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.2rem;
+  height: 150px;
 }
 
 /* Map */
@@ -162,7 +183,6 @@ form span {
 }
 
 .probability-card::before{
-
   content: '';
   position: absolute;
   top: 50%;
