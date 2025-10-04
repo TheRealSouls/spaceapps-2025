@@ -1,6 +1,14 @@
-/* Light/dark mode */
+/* DOM Elements -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 const themeIcon = document.getElementById("theme-icon");
+const temperatureCelsius = document.getElementById("temperatureCelsius");
+const temperatureFahrenheit = document.getElementById("temperatureFahrenheit");
+const windSpeed = document.getElementById("windSpeed");
+const humidity = document.getElementById("humidity");
+const rainfall = document.getElementById("rainfall");
+const atmosphericPressure = document.getElementById("atmosphericPressure");
+const riskScore = document.getElementById("riskScore");
 
+/* Theme Toggle -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 const toggleTheme = () => {
     document.body.classList.toggle('light-mode');
 
@@ -11,8 +19,8 @@ const toggleTheme = () => {
     }
 }
 
-/* Map and map search*/
-let map = L.map('map').setView([53.3489, -6.2430], 10)
+/* map -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+let map = L.map('map').setView([53.3489, -6.2430], 10);
 
 L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=qp7uy5rCF4Ij9uDMupR6', {
     attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
@@ -20,10 +28,10 @@ L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=qp7uy5
 
 let marker = L.marker([53.3489, -6.2430]).addTo(map);
 
+/* Map interactions -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 map.on('click', function(e) {
-    lat = e.latlng.lat;
-    lng = e.latlng.lng;
-
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
     marker.setLatLng([lat, lng]);
 });
 
@@ -57,8 +65,8 @@ function searchLocation() {
         });
 }
 
-/* Sidebar scroll indicator */
-document.addEventListener('DOMContentLoaded', function() {
+/* Sidebar scroll indicator -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+function initialiseScrollIndicator() {
     const sidebar = document.querySelector('.sidebar');
     const indicator = document.createElement('div');
     indicator.className = 'scroll-indicator';
@@ -71,16 +79,36 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.remove('scrolled');
         }
     });
+}
 
+/* Main scroll indicator -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+function initialiseMainScrollIndicator() {
+    const dataPanel = document.querySelector('.data-panel');
+    const indicator = document.createElement('div');
+    indicator.className = 'scroll-indicator';
+    dataPanel.appendChild(indicator);
+
+    dataPanel.addEventListener('scroll', function() {
+        if (this.scrollTop > 10) {
+            this.classList.add('scrolled');
+        } else {
+            this.classList.remove('scrolled');
+        }
+    });
+}
+
+
+/* Date/time -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+function initialiseDateTime() {
     const now = new Date();
     const currentDate = now.toISOString().split('T')[0];
-    const currentTime = now.toTimeString().slice(0,5);
+    const currentTime = now.toTimeString().slice(0, 5);
     
     document.getElementById('eventDate').value = currentDate;
     document.getElementById('appt').value = currentTime;
     
     updateDateTimeDisplay();
-});
+}
 
 function updateDateTimeDisplay() {
     const dateInput = document.getElementById('eventDate');
@@ -124,23 +152,7 @@ function updateEverything() {
         .then(response => response.json())
         .then(data => {
             console.log('Reverse geocoding data:', data);
-            let locationName;
-            
-            if (data && data.address) {
-                locationName = data.address.city || 
-                              data.address.town || 
-                              data.address.village || 
-                              data.address.hamlet || 
-                              data.address.suburb || 
-                              data.address.county || 
-                              data.address.state || 
-                              data.display_name.split(',')[0];
-            } else if (data && data.display_name) {
-                locationName = data.display_name.split(',')[0];
-            } else {
-                locationName = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
-            }
-            
+            const locationName = getLocationName(data, lat, lng);
             updateDisplayWithLocation(locationName);
             getResponse(lat, lng);
         })
@@ -151,47 +163,65 @@ function updateEverything() {
         });
 }
 
+function getLocationName(data, lat, lng) {
+    if (data && data.address) {
+        return data.address.city || 
+               data.address.town || 
+               data.address.village || 
+               data.address.hamlet || 
+               data.address.suburb || 
+               data.address.county || 
+               data.address.state || 
+               data.display_name.split(',')[0];
+    } else if (data && data.display_name) {
+        return data.display_name.split(',')[0];
+    } else {
+        return `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+    }
+}
+
 function updateDisplayWithLocation(locationName) {
     const dateDisplay = document.getElementById('date-display').textContent;
     const timeDisplay = document.getElementById('time-display').textContent;
-    document.getElementById('location-display').innerHTML = `${locationName} - <span id="date-display">${dateDisplay}</span> - <span id="time-display">${timeDisplay}</span>`;
+    document.getElementById('location-display').innerHTML = 
+        `${locationName} - <span id="date-display">${dateDisplay}</span> - <span id="time-display">${timeDisplay}</span>`;
 }
 
-/* Clouds */
+/* Clouds -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+function createClouds() {
+    const container = document.querySelector('.clouds');
+    const maxWidth = window.innerWidth;
 
-const container = document.querySelector('.clouds');
-const maxWidth = window.innerWidth;
+    for (let i = 0; i < 25; i++) {
+        const cloud = document.createElement('div');
+        cloud.classList.add('cloud');
 
-for (let i = 0; i < 25; i++) {
-    const cloud = document.createElement('div');
-    cloud.classList.add('cloud');
+        const width = Math.floor(Math.random() * (maxWidth / 3));
+        const height = Math.floor(width / 2);
+        cloud.style.width = `${width}px`;
+        cloud.style.height = `${height}px`;
 
-    const width = Math.floor(Math.random() * (maxWidth / 3));
-    const height = Math.floor(width / 2);
-    cloud.style.width = `${width}px`;
-    cloud.style.height = `${height}px`;
+        const top = Math.floor(Math.random() * 80) + 10;
+        cloud.style.top = `${top}%`;
 
-    const top = Math.floor(Math.random() * 80) + 10;
-    cloud.style.top = `${top}%`;
+        const left = Math.floor(Math.random() * 100);
+        cloud.style.left = `${left}%`;
 
-    const left = Math.floor(Math.random() * 100);
-    cloud.style.left = `${left}%`;
+        const duration = Math.floor(Math.random() * 20) + 20;
+        const delay = Math.floor(Math.random() * -20);
+        cloud.style.animation = `float ${duration}s infinite linear`;
+        cloud.style.animationDelay = `${delay}s`;
 
-    const duration = Math.floor(Math.random() * 20) + 20;
-    const delay = Math.floor(Math.random() * -20);
-    cloud.style.animation = `float ${duration}s infinite linear`;
-    cloud.style.animationDelay = `${delay}s`;
-
-    container.appendChild(cloud);
+        container.appendChild(cloud);
+    }
 }
 
-/* Actual data */
+/* Initialisation -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+document.addEventListener('DOMContentLoaded', function() {
+    initialiseScrollIndicator();
+    initialiseDateTime();
+    createClouds();
+});
 
-const temperatureCelsius = document.getElementById("temperatureCelsius");
-const temperatureFahrenheit = document.getElementById("temperatureFahrenheit");
-const windSpeed = document.getElementById("windSpeed");
-const humidity = document.getElementById("humidity");
-const rainfall = document.getElementById("rainfall");
-const atmosphericPressure = document.getElementById("atmosphericPressure");
-
-const riskScore = document.getElementById("riskScore");
+/* Notes -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+// getResponse is referenced but not defined

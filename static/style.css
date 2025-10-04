@@ -17,6 +17,7 @@
   --green: #24AE5A;
   --orange: #f78146;
   --red: #D45455;
+  --cloud: rgba(255, 255, 255, 0.2);
   --padding-base: 1.25rem;
   --indicatorv-width: 0.25rem;
   --indicatorv-stickout: 0.25rem;
@@ -40,6 +41,7 @@
   --green: #198754;
   --orange: #e65c23;
   --red: #c0392b;
+  --cloud: rgba(0, 0, 0, 0.2);
 }
 
 /* Base Styles -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -93,7 +95,7 @@ p {
 
 .cloud {
   position: absolute;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--cloud);
   border-radius: 50px;
   opacity: 0.6;
   animation: float 20s infinite linear;
