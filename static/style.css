@@ -289,10 +289,10 @@ header button {
   width: var(--indicatorv-width);
   height: 90%;
   border-radius: 2px;
-  background-color: var(--green);
+  background-color: var(--info);
   z-index: 1;
 }
-
+/*
 .probability-card::after {
   content: 'STATUS';
   position: absolute;
@@ -308,7 +308,7 @@ header button {
   justify-content: center;
   align-items: center;
 }
-
+*/
 .main-card {
   margin-top: 20px;
   margin-bottom: 20px;

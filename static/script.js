@@ -34,15 +34,83 @@ const toggleTheme = () => {
 }
 
 /* Grab recomms -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-async function loadSentences() {
+async function loadRecommendations() {
     try {
-        const response = await fetch('sentences.json');
+        const response = await fetch('../static/recommendations.json');
         const data = await response.json();
-        return data.sentences;
+        return data.weather_recommendations;
     } catch (error) {
-        console.error('Error loading sentences:', error);
-        return [];
+         console.error('Error loading recommendations:', error);
+            return [];
     }
+}
+
+function updateRecommendations(conditions) {
+    const recommendationsList = document.querySelector('.card ul');
+    recommendationsList.innerHTML = '';
+                
+    if (!conditions || conditions.length === 0) {
+        recommendationsList.innerHTML = '<li>No recommendations available</li>';
+        return;
+    }
+                        
+    const allRecommendations = [];
+    conditions.forEach(condition => {
+        if (condition.recommendations) {
+            allRecommendations.push(...condition.recommendations);
+        }
+    });
+                                        
+    const uniqueRecommendations = [...new Set(allRecommendations)].slice(0, 7);
+    uniqueRecommendations.forEach(recommendation => {
+        const li = document.createElement('li');
+        li.textContent = recommendation;
+        recommendationsList.appendChild(li);
+    });
+}
+
+async function determineWeatherConditions(weatherData, riskData) {
+    const recommendations = await loadRecommendations();
+    const activeConditions = [];
+                
+    const tempC = weatherData["t_2m:C"];
+    if (tempC > 30) {
+        const veryHot = recommendations.find(r => r.weather_condition === "very_hot");
+        if (veryHot) activeConditions.push(veryHot);
+    } else if (tempC > 25) {
+        const hot = recommendations.find(r => r.weather_condition === "hot");
+        if (hot) activeConditions.push(hot);
+    } else if (tempC < 0) {
+        const veryCold = recommendations.find(r => r.weather_condition === "very_cold");
+        if (veryCold) activeConditions.push(veryCold);
+    } else if (tempC < 10) {
+        const cold = recommendations.find(r => r.weather_condition === "cold");
+        if (cold) activeConditions.push(cold);
+    }
+                                
+    const rain = weatherData["precip_24h:mm"];
+    if (rain > 10) {
+        const rainCondition = recommendations.find(r => r.weather_condition === "rain");
+        if (rainCondition) activeConditions.push(rainCondition);
+    }
+        
+    const wind = weatherData["wind_speed_10m:ms"];
+    if (wind > 7) {
+        const windyCondition = recommendations.find(r => r.weather_condition === "windy");
+        if (windyCondition) activeConditions.push(windyCondition);
+    }
+                                                                
+    const humidity = weatherData["absolute_humidity_2m:gm3"];
+    if (humidity > 15) {
+        const humidCondition = recommendations.find(r => r.weather_condition === "humid");
+        if (humidCondition) activeConditions.push(humidCondition);
+    }
+                                                                                
+    if (rain < 1 && tempC > 15 && tempC < 28) {
+        const sunnyCondition = recommendations.find(r => r.weather_condition === "sunny");
+        if (sunnyCondition) activeConditions.push(sunnyCondition);
+    }                                                                                            
+    return activeConditions;
 }
 
 /* map -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -374,6 +442,9 @@ async function getCurrentWeatherData(date, time, lat, lng) {
         humidity.innerText = humidityVal.toFixed(1);
         rainfall.innerText = rain.toFixed(1);
         atmosphericPressure.innerText = pressure.toFixed(1);
+
+        const conditions = await determineWeatherConditions(data, null);
+        updateRecommendations(conditions);
 
     } catch (error) {
         console.error("Error fetching current weather data:", error);

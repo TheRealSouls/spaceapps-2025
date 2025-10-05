@@ -15,16 +15,17 @@ load_dotenv()
 
 app = Flask(__name__)
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+#@app.route('/favicon.ico')
+#def favicon():
+#    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
 matplotlib.use('Agg')
-print(os.getenv("METEOMATICS_USERNAME"))
+
 
 # date -> YYYY-MM-DD
 @app.get('/api/weather-prediction/<date>/<time>/<lat>/<long>')
@@ -46,7 +47,7 @@ def weather_prediction(date, time, lat, long):
     #calculate mean, standard deviation, convert x value to z value
     mean_temperature = sum(organized['t_2m:C'])/len(organized['t_2m:C'])
     standard_deviation_temperature = statistics.stdev(organized['t_2m:C'])
-    x_hot = 18
+    x_hot = 25
     x_cold = 7
     z_temp_hot = (x_hot-mean_temperature)/(standard_deviation_temperature)
     z_temp_cold = (x_cold-mean_temperature)/(standard_deviation_temperature)
