@@ -33,6 +33,7 @@ map.on('click', function(e) {
     const lat = e.latlng.lat;
     const lng = e.latlng.lng;
     marker.setLatLng([lat, lng]);
+    // REMOVED: updateEverything(); 
 });
 
 function handleSearchEnter(event) {
@@ -55,6 +56,7 @@ function searchLocation() {
                 const lon = parseFloat(result.lon);
                 map.setView([lat, lon], 13);
                 marker.setLatLng([lat, lon]);
+                // REMOVED: updateEverything(); 
             } else {
                 alert('Location not found. Please try a different search term.');
             }
@@ -148,43 +150,56 @@ function updateEverything() {
     const lat = markerLatLng.lat;
     const lng = markerLatLng.lng;
 
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log('Reverse geocoding data:', data);
-            const locationName = getLocationName(data, lat, lng);
-            updateDisplayWithLocation(locationName);
-            getResponse(lat, lng);
-        })
-        .catch(error => {
-            console.error('Error getting location name:', error);
-            updateDisplayWithLocation(`Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`);
-            getResponse(lat, lng);
-        });
+    Promise.race([
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`),
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&addressdetails=1`)
+    ])
+    .then(response => response.json())
+    .then(data => {
+        console.log('Reverse geocoding data:', data);
+        
+        let locationName = getBestLocationName(data, lat, lng);
+        updateDisplayWithLocation(locationName);
+        getResponse(lat, lng);
+    })
+    .catch(error => {
+        console.error('Error getting location name:', error);
+        updateDisplayWithLocation(`Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`);
+        getResponse(lat, lng);
+    });
 }
 
-function getLocationName(data, lat, lng) {
-    if (data && data.address) {
-        return data.address.city || 
-               data.address.town || 
-               data.address.village || 
-               data.address.hamlet || 
-               data.address.suburb || 
-               data.address.county || 
-               data.address.state || 
-               data.display_name.split(',')[0];
-    } else if (data && data.display_name) {
-        return data.display_name.split(',')[0];
-    } else {
-        return `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+function getBestLocationName(data, lat, lng) {
+    if (!data) return `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+    
+    if (data.name && data.name !== data.display_name?.split(',')[0]) {
+        return data.name;
     }
+    
+    if (data.display_name) {
+        const parts = data.display_name.split(',');
+        if (data.category === 'tourism' || data.type === 'attraction' || parts.length <= 3) {
+            return parts.slice(0, 2).join(', ').trim();
+        }
+        return parts[0].trim();
+    }
+    
+    if (data.address) {
+        return data.address.venue || 
+               data.address.attraction ||
+               data.address.tourism ||
+               data.address.building ||
+               `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
+    }
+    
+    return `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`;
 }
 
 function updateDisplayWithLocation(locationName) {
     const dateDisplay = document.getElementById('date-display').textContent;
     const timeDisplay = document.getElementById('time-display').textContent;
     document.getElementById('location-display').innerHTML = 
-        `${locationName} - <span id="date-display">${dateDisplay}</span> - <span id="time-display">${timeDisplay}</span>`;
+        `${locationName}ㅤ//ㅤ<span id="date-display">${dateDisplay}</span>ㅤ//ㅤ<span id="time-display">${timeDisplay}</span>`;
 }
 
 /* Clouds -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -205,7 +220,7 @@ function createClouds() {
         cloud.style.top = `${top}%`;
 
         const left = Math.floor(Math.random() * 100);
-        cloud.style.left = `${left}%`;
+        cloud.style.left = `-${left}%`;
 
         const duration = Math.floor(Math.random() * 20) + 20;
         const delay = Math.floor(Math.random() * -20);
@@ -221,7 +236,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initialiseScrollIndicator();
     initialiseDateTime();
     createClouds();
+    
+    // REMOVED: updateEverything(); 
+    // Data is now only updated when the "Go" button calls updateEverything()
 });
 
 /* Notes -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-// getResponse is referenced but not defined
+function getResponse(lat, lng) { /* Placeholder function */ }

@@ -31,53 +31,53 @@
         </header>
 
         <div class="main-content">
-            <div class="sidebar">
-                <section class="card" id="eventDetails">
-                    <h2>Event Details</h2>
-                    <form action="#" method="get">
-                        <span>
-                            <label>Date</label>
-                            <input type="date" id="eventDate" name="date" required>
-                        </span>
-                        <span>
-                            <label>Time</label>
-                            <input type="time" id="appt" name="appt" required>
-                        </span>
-                    </form>
-
-                    <div class="map-container">
-                       <label>Select Your Location</label>
+            <div class="sidebar-wrapper">
+                <div class="sidebar">
+                    <section class="card" id="eventDetails">
+                        <h2><i class="fa-solid fa-globe" style="color: var(--blue)"></i> Event Details</h2>
                         <form action="#" method="get">
-                            <input type="text" id="location-search" placeholder="Search location..." onkeypress="handleSearchEnter(event)" >
+                            <span>
+                                <label>Date</label>
+                                <input type="date" id="eventDate" name="date" required>
+                            </span>
+                            <span>
+                                <label>Time</label>
+                                <input type="time" id="appt" name="appt" required>
+                            </span>
                         </form>
-                        <div id="map"></div>
-                    </div>
 
-                    <button id="update-button" onclick="updateEverything()">Go!</button>
-                </section>
+                        <div class="map-container">
+                           <label>Select Your Location</label>
+                            <form action="#" method="get">
+                                <input type="text" id="location-search" placeholder="Search location..." onkeypress="handleSearchEnter(event)" >
+                            </form>
+                            <div id="map"></div>
+                        </div>
 
-                <section class="card">
-                    <h2><i class="fa-solid fa-lightbulb" style="color: var(--blue)"></i> Recommendations</h2>
-                    <ul>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                        <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
-                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                        <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
-                    </ul>
-                </section>
+                        <button id="update-button" onclick="updateEverything()">Go!</button>
+                    </section>
+
+                    <section class="card">
+                        <h2><i class="fa-solid fa-lightbulb" style="color: var(--blue)"></i> Recommendations</h2>
+                        <ul>
+                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
+                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
+                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
+                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
+                        </ul>
+                    </section>
+                </div>
             </div>
 
             <div class="data-panel">
                 <div class="data-content">
-                    <!-- Risk score stays fixed at the top -->
                     <div class="risk-score">
-                        <p id="location-display">Lat: 53.3489, Lng: -6.2430 - <span id="date-display">Day, Date</span> - <span id="time-display">XX:XX</span></p>               
+                        <p id="location-display">National College of Ireland - Campus 1ㅤ//ㅤ<span id="date-display">Day, Date</span>ㅤ//ㅤ<span id="time-display">XX:XX</span></p>               
                         <h2>Moderate Risk</h2>
                         <p>Some adverse conditions possible, plan accordingly.</p>
                         <p class="total-score"><span id="riskScore">45</span> /100</p>
                     </div>
 
-                    <!-- Scrollable area for all content below risk score -->
                     <div class="data-scrollable">
                         <div class="weather-details">
                             <section class="probability-card">
@@ -174,7 +174,7 @@
         </div>
 
         <footer>
-            <p>ExamReady - Keith Gamier, Asher Malik, Billy Chan, Matas Roda, Vinzel Ferrer | For <a href="https://www.spaceappschallenge.org/">NASA SpaceApps</a></p>
+            <p>ExamReady - Keith Gamier, Asher Malik, Billy Chan, Matas Roda, and Vinzel Ferrer | For the 2025 <a href="https://www.spaceappschallenge.org/">NASA Space Apps Challenge</a></p>
         </footer>
     </div>
     <script src="../static/script.js"></script>

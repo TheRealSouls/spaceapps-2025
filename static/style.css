@@ -35,11 +35,11 @@
   --gray: #f5f5f5;
   --light-gray: #e9e9e9;
   --light-gray-2: #D7DCE5;
-  --info: #3366cc;
+  --info: #4e81da;
   --yellow: #c7b800;
   --white: #000;
   --green: #198754;
-  --orange: #e65c23;
+  --orange: #f78146;
   --red: #c0392b;
   --cloud: rgba(0, 0, 0, 0.2);
 }
@@ -164,38 +164,36 @@ header button {
 }
 
 /* Sidebar -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-.sidebar {
+.sidebar-wrapper {
   flex: 0 0 18.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar {
   padding: 0;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
+  min-height: 0; 
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  position: relative;
+  height: 100%;
 }
 
-.sidebar::after {
+/*
+.sidebar-wrapper::after {
   content: '';
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2rem;
-  background: linear-gradient(to top, var(--gray) 0%, transparent 100%);
+  height: 1rem;
+  background: linear-gradient(to top, var(--info) 0%, transparent 150%);
   pointer-events: none;
-  z-index: 10;
+  z-index: 2;
 }
-
-.sidebar::-webkit-scrollbar {
-  display: block;
-}
-
-.sidebar.scrolled .scroll-indicator {
-  opacity: 0;
-}
+  */
 
 /* Dashboard Main -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 .dashboard-main {
@@ -284,12 +282,14 @@ header button {
   width: var(--indicatorh-width);
   height: var(--indicatorh-height);
   top: 0;
-  right: 0;
+  right: calc(0px - var(--indicatorh-stickout));
   transform: translateY(10px);
   background-color: var(--orange);
   border-radius: 2px;
-  right: calc(-0.7 * var(--indicatorv-width));
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-card {
@@ -375,6 +375,7 @@ form {
   flex-direction: row;
   justify-content: space-around;
   margin: 1rem 0;
+  align-items: center;
 }
 
 form span {
@@ -392,6 +393,7 @@ form input {
   border-radius: 0.5rem;
   font-family: 'Arial', sans-serif;
   transition: all 0.3s ease;
+  align-items: center;
 }
 
 form input:focus {
@@ -441,10 +443,10 @@ ul li::marker {
 
 /* Scroll Indicator -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 .scroll-indicator {
-  position: fixed;
-  bottom: 80px;
+  position: absolute;
+  bottom: 20px;
   left: 50%;
-  transform: translateX(calc(-600px + 9.375rem));
+  transform: translateX(-50%);
   width: 30px;
   height: 30px;
   background-color: var(--gray);
@@ -456,13 +458,17 @@ ul li::marker {
   opacity: 1;
   transition: opacity 0.3s ease;
   pointer-events: none;
-  z-index: 10;
+  z-index: 20;
 }
 
 .scroll-indicator::after {
   content: "↓";
   color: var(--color-text-light);
   font-size: 16px;
+}
+
+.sidebar.scrolled .scroll-indicator {
+  opacity: 0;
 }
 
 /* Footer -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -476,6 +482,7 @@ footer {
   margin-top: 0;
   align-self: center;
   text-align: center;
+  z-index: 20;
 }
 
 footer p,
