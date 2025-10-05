@@ -11,11 +11,15 @@ const atmosphericPressure = document.getElementById("atmosphericPressure");
 const riskScore = document.getElementById("riskScore");
 const comfortScore = document.getElementById("comfortScore");
 
-let veryHotProb = document.getElementById("veryHotProb");
-let veryColdProb = document.getElementById("veryColdProb");
-let veryWindyProb = document.getElementById("veryWindyProb");
-let veryWetProb = document.getElementById("veryWetProb");
-let veryUncomfortableProb = document.getElementById("veryUncomfortableProb");
+const riskScoreElement = document.querySelector(".risk-score");
+const riskClassification = document.getElementById("riskClassification");
+const riskDot = document.getElementById("riskDot");
+
+const veryHotProb = document.getElementById("veryHotProb");
+const veryColdProb = document.getElementById("veryColdProb");
+const veryWindyProb = document.getElementById("veryWindyProb");
+const veryWetProb = document.getElementById("veryWetProb");
+const veryUncomfortableProb = document.getElementById("veryUncomfortableProb");
 
 
 /* Theme Toggle -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -111,17 +115,12 @@ function initialiseMainScrollIndicator() {
     indicator.className = 'scroll-indicator';
     dataPanel.appendChild(indicator);
 
-    console.log('Main scroll indicator initialized on:', dataPanel);
-    console.log('Data panel scroll height:', dataPanel.scrollHeight, 'Client height:', dataPanel.clientHeight);
-
     dataPanel.addEventListener('scroll', function() {
         
         if (this.scrollTop > 10) {
             this.classList.add('scrolled');
-            console.log('Added scrolled class');
         } else {
             this.classList.remove('scrolled');
-            console.log('Removed scrolled class');
         }
     });
 }
@@ -200,10 +199,18 @@ function updateEverything() {
                 lng);
     
     getCurrentWeatherData(date, time, lat, lng);
+
+    document.getElementById("sunshineGraph").src = `/api/sunshine-data/${date}/${lat}/${lng}`;
+    document.getElementById("temperatureGraph").src = `/api/temp-data/${date}/${lat}/${lng}`;
+    document.getElementById("windGraph").src = `/api/wind-data/${date}/${lat}/${lng}`;
+    document.getElementById("rainfallGraph").src = `/api/rainfall-chart/${date}/${lat}/${lng}`;
     
+    /*
     loadSunshineGraph(date, lat, lng);
     loadTemperatureGraph(date, lat, lng);
+    loadWindGraph(date, lat, lng);
     loadRainfallGraph(date, lat, lng);
+    */
 }
 
 function getBestLocationName(data, lat, lng) {
@@ -285,6 +292,8 @@ const getResponse = (lat, lng) => {  //getReponse referenced but not defined
     /* Placeholder */
 }
 
+/* Fetching data from API */
+
 async function getRiskScores(date, time, lat, lng) {
     const url = `/api/weather-prediction/${date}/${time}/${lat}/${lng}`;
 
@@ -302,6 +311,50 @@ async function getRiskScores(date, time, lat, lng) {
 
         riskScore.innerText = data.data.risk_score;
         comfortScore.innerText = data.data.comfort_score;
+
+        riskScoreElement.classList.remove('very-low-risk', 'low-risk', 'medium-risk', 'high-risk');
+
+        let riskScoreValue = parseFloat(data.data.risk_score.replace('%', ''));
+
+        if (riskScoreValue < 10) {
+            riskScoreElement.classList.add('very-low-risk');
+            riskClassification.innerText = 'Very Low Risk';
+            riskDot.innerText = '🔵';
+        } else if (riskScoreValue <= 35) {
+            riskScoreElement.classList.add("low-risk");
+            riskClassification.innerText = 'Low Risk';
+            riskDot.innerText = '🟢';
+        } else if (riskScoreValue < 75) {
+            riskScoreElement.classList.add("medium-risk");
+            riskClassification.innerText = 'Medium Risk';
+            riskDot.innerText = '🟡';
+        } else if (riskScoreValue <= 100) {
+            riskScoreElement.classList.add("high-risk");
+            riskClassification.innerText = 'High Risk';
+            riskDot.innerText = '🔴';
+        }
+
+        const metrics = [
+            { value: parseFloat(data.data.very_hot.replace('%', '')), element: document.getElementById("veryHot") },
+            { value: parseFloat(data.data.very_cold.replace('%', '')), element: document.getElementById("veryCold") },
+            { value: parseFloat(data.data.very_windy.replace('%', '')), element: document.getElementById("veryWindy") },
+            { value: parseFloat(data.data.very_wet.replace('%', '')), element: document.getElementById("veryWet") },
+        ];
+
+        metrics.forEach(({ value, element }) => {
+            if (!element) return;
+            element.classList.remove('very-low-risk', 'low-risk', 'medium-risk', 'high-risk');
+            
+            if (value < 10) {
+                element.classList.add('very-low-risk');
+            } else if (value <= 35) {
+                element.classList.add('low-risk');
+            } else if (value < 75) {
+                element.classList.add('medium-risk');
+            } else if (value <= 100) {
+                element.classList.add('high-risk');
+            }
+        });
     } catch (err) {
         console.error(err);
     }
@@ -334,14 +387,7 @@ async function getCurrentWeatherData(date, time, lat, lng) {
     }
 }
 
-
-
-
-
-
-
-
-/* Graphs */
+/* Graphs
 
 async function loadSunshineGraph(date, lat, lng) {
     try {
@@ -350,7 +396,7 @@ async function loadSunshineGraph(date, lat, lng) {
 
         if (data.image) {
             const imgElement = document.getElementById("sunshineGraph");
-            imgElement.src = `data:image/png;base64,${data.image}`;
+            imgElement.src = `data:image/jpeg;base64,${data.image}`;
         } else {
             console.error("No image data returned from API");
         }
@@ -365,13 +411,29 @@ async function loadTemperatureGraph(date, lat, lng) {
         const data = await response.json();
 
         if (data.image) {
-            const imgElement = document.getElementById("temperatureGraph");
-            imgElement.src = `data:image/png;base64,${data.image}`;
+            const imgElement = document.getElementById("tempGraph");
+            imgElement.src = `data:image/jpeg;base64,${data.image}`;
         } else {
             console.error("No image data returned from API");
         }
     } catch (error) {
         console.error("Error fetching temperature graph:", error);
+    }
+}
+
+async function loadWindGraph(date, lat, lng) {
+    try {
+        const response = await fetch(`/api/wind-data/${date}/${lat}/${lng}`);
+        const data = await response.json();
+
+        if (data.image) {
+            const imgElement = document.getElementById("windGraph");
+            imgElement.src = `data:image/jpeg;base64,${data.image}`;
+        } else {
+            console.error("No image data returned from API");
+        }
+    } catch (error) {
+        console.error("Error fetching wind graph:", error);
     }
 }
 
@@ -382,7 +444,7 @@ async function loadRainfallGraph(date, lat, lng) {
 
         if (data.image) {
             const imgElement = document.getElementById("rainfallGraph");
-            imgElement.src = `data:image/png;base64,${data.image}`;
+            imgElement.src = `data:image/jpeg;base64,${data.image}`;
         } else {
             console.error("No image data returned from API");
         }
@@ -390,3 +452,4 @@ async function loadRainfallGraph(date, lat, lng) {
         console.error("Error fetching rainfall graph:", error);
     }
 }
+*/

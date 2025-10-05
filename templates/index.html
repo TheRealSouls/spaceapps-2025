@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="../media/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="../media/favicon.ico?">
 </head>
 <body>
     <div class="clouds">
@@ -23,7 +23,7 @@
         <header>
             <span>
                 <h1>WeatherWisdom</h1>
-                <p>Plan your outdoor events with confidence</p>
+                <p>Plan your outdoor events with confidence - will it rain on your parade?</p>
             </span>
            <button onclick="toggleTheme()">
                 <i id="theme-icon" class="fa-solid fa-sun"></i>
@@ -74,7 +74,7 @@
                     <div class="risk-score">
                         <p id="location-display">National College of Ireland - Campus 1ㅤ//ㅤ<span id="date-display">Day, Date</span>ㅤ//ㅤ<span id="time-display">XX:XX</span></p>               
                         <h2 id="riskClassification">[risk scale]</h2>
-                        <p>Some adverse conditions possible, plan accordingly.</p>
+                        <p id="risk-dot">🔵</p>
                         <p class="total-score"><span id="riskScore"></span></p>
                     </div>
                     <div class="data-wrapper">
@@ -150,7 +150,7 @@
 
         <!--- Atmo Pressure -->
                             <div class="event-probabilities">
-                                <section class="main-card low-risk">
+                                <section class="main-card" id="veryHot">
                                     <div class="probability-description">
                                         <span>
                                             <i class="fa-solid fa-tornado"></i>
@@ -168,7 +168,7 @@
                                 </section>
 
         <!--- Temp -->
-                                <section class="main-card medium-risk">
+                                <section class="main-card" id="veryCold">
                                     <div class="probability-description">
                                         <span>
                                             <i class="fa-solid fa-snowflake"></i>
@@ -186,7 +186,7 @@
                                 </section>
 
         <!--- Wind Speed --->
-                                <section class="main-card high-risk">
+                                <section class="main-card" id="veryWindy">
                                     <div class="probability-description">
                                         <span>
                                             <i class="fa-solid fa-wind"></i>
@@ -204,7 +204,7 @@
                                 </section>
 
         <!--- Wetness --->
-                                <section class="main-card">
+                                <section class="main-card" id="veryWet">
                                     <span class="probability-description">
                                         <span>
                                             <i class="fa-solid fa-water"></i>
@@ -222,14 +222,6 @@
                                     <span class="graph-container">
                                         <img src="" alt="Rainfall Graph for Current Day" id="rainfallGraph">
                                     </span>
-                                </section>
-
-                            </div>
-
-                            <div class="charts">
-                                <h2>Weather Patterns</h2>
-                                <section class="main-card">
-                                    
                                 </section>
                             </div>
                         </div>

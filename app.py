@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, send_file
+from flask import Flask, render_template, jsonify, send_file, send_from_directory
 import requests
 from datetime import datetime
 from scipy.stats import norm
@@ -7,15 +7,24 @@ import os
 import io
 import base64
 import matplotlib.pyplot as plt
+import matplotlib
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
 app = Flask(__name__)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
+matplotlib.use('Agg')
+print(os.getenv("METEOMATICS_USERNAME"))
 
 # date -> YYYY-MM-DD
 @app.get('/api/weather-prediction/<date>/<time>/<lat>/<long>')
@@ -105,6 +114,7 @@ def get_current_data(date, time, lat, long):
 
 
 def plot_graph(xlabel, ylabel, color, x, y):
+    print(f"Plotting graph with {len(x)} data points")
     plt.figure()
     plt.plot(x, y, color=color)
     plt.xlabel(xlabel)
@@ -119,8 +129,9 @@ def plot_graph(xlabel, ylabel, color, x, y):
 
     #Save it to a bytes buffer
     buf = io.BytesIO()
-    plt.savefig(buf, format="png")
+    plt.savefig(buf, format="jpg")
     buf.seek(0)
+    print(f"Generated image buffer size: {buf.getbuffer().nbytes} bytes")
     plt.close()
 
     # Save to BytesIO instead of file
@@ -130,8 +141,9 @@ def plot_graph(xlabel, ylabel, color, x, y):
     # plt.close()
 
     # Encode image to base64
-    img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-    return img_base64
+    #img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+    return buf
+    #return img_bytes
 
 @app.get('/api/rainfall_chart/<date>/<lat>/<long>')
 def rainfall_graph(date, lat, long):
@@ -143,8 +155,8 @@ def rainfall_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    img_base64 = plot_graph(xlabel="Time", ylabel="Rainfall (mm)", color='blue', x=x, y=y)
-    return jsonify({"image": img_base64})
+    buf = plot_graph(xlabel="Time", ylabel="Rainfall (mm)", color='blue', x=x, y=y)
+    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='rainfall-graph.png')
     #return send_file(img_bytes, mimetype='image/png')
 
 
@@ -158,8 +170,12 @@ def sunshine_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    img_base64 = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
-    return jsonify({"image": img_base64})
+    #img_base64 = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
+    #img_bytes = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
+    #return jsonify({"image": img_base64})
+    #return send_file(img_bytes, mimetype='image/png')
+    buf = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
+    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='sunshine.png')
 
 @app.get('/api/temp-data/<date>/<lat>/<long>')
 def temp_graph(date, lat, long):
@@ -171,8 +187,12 @@ def temp_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    img_base64 = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
-    return jsonify({"image": img_base64})
+    #img_base64 = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
+    #img_bytes = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
+    #return jsonify({"image": img_base64})
+    #return send_file(img_bytes, mimetype='image/png')
+    buf = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
+    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='temperature-graph.png')
 
 @app.get('/api/wind-data/<date>/<lat>/<long>')
 def wind_graph(date, lat, long):
@@ -184,8 +204,12 @@ def wind_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    img_base64 = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
-    return jsonify({"image": img_base64})
+    #img_base64 = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
+    #return jsonify({"image": img_base64})
+
+    buf = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
+    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='Wind-graph.png')
+    
 
 
 if __name__ == '__main__':

@@ -1,7 +1,124 @@
 {
-    "recommendations": [
-        "Bring an umbrella.",
-        "Wear a coat",
-        "We are 100% using AI to generate these sentences"
-    ]
+  "weather_recommendations": [
+    {
+      "weather_condition": "rain",
+      "recommendations": [
+        "Bring an umbrella",
+        "Wear a waterproof jacket",
+        "Wear waterproof shoes or boots",
+        "Carry a raincoat in your bag",
+        "Use a waterproof backpack cover",
+        "Pack an extra pair of socks",
+        "Consider waterproof pants",
+        "Bring a plastic bag for wet items",
+        "Use anti-fog spray for glasses",
+        "Carry a small towel"
+      ]
+    },
+    {
+      "weather_condition": "very_cold",
+      "recommendations": [
+        "Wear multiple layers",
+        "Protect exposed skin",
+        "Use insulated footwear",
+        "Wear thermal socks",
+        "Cover ears completely",
+        "Use face mask or balaclava",
+        "Apply moisturizer frequently",
+        "Watch for ice on sidewalks",
+        "Keep emergency kit in car",
+        "Check on elderly neighbors"
+      ]
+    },
+    {
+      "weather_condition": "cold",
+      "recommendations": [
+        "Wear a warm coat",
+        "Layer clothing for insulation",
+        "Wear thermal underwear",
+        "Don't forget gloves",
+        "Wear a warm hat",
+        "Use a scarf or neck warmer",
+        "Wear insulated boots",
+        "Use hand warmers",
+        "Wear thick socks",
+        "Consider thermal leggings"
+      ]
+    },
+    {
+      "weather_condition": "very_hot",
+      "recommendations": [
+        "Limit outdoor activities",
+        "Wear light-colored clothing",
+        "Use cooling vest if available",
+        "Take cool baths or showers",
+        "Avoid strenuous exercise",
+        "Eat lighter meals",
+        "Use window reflectors",
+        "Stay on lower floors",
+        "Know signs of heat illness",
+        "Check on vulnerable individuals"
+      ]
+    },
+    {
+      "weather_condition": "hot",
+      "recommendations": [
+        "Wear light, breathable clothing",
+        "Use sunscreen (SPF 30+)",
+        "Wear a wide-brimmed hat",
+        "Wear sunglasses",
+        "Stay hydrated - carry water",
+        "Seek shade during peak hours",
+        "Wear light colors",
+        "Use cooling towels",
+        "Wear open-toed shoes or sandals",
+        "Take frequent breaks in AC"
+      ]
+    },
+    {
+      "weather_condition": "windy",
+      "recommendations": [
+        "Wear windproof jacket",
+        "Secure loose items",
+        "Wear eye protection",
+        "Tie back long hair",
+        "Avoid umbrellas",
+        "Wear close-fitting hats",
+        "Be cautious with doors",
+        "Wear layers for wind chill",
+        "Check for flying debris",
+        "Consider ear protection"
+      ]
+    },
+    {
+      "weather_condition": "humid",
+      "recommendations": [
+        "Wear moisture-wicking fabrics",
+        "Bring extra shirt to change",
+        "Use antiperspirant",
+        "Carry a handheld fan",
+        "Wear open footwear",
+        "Use powder for chafing",
+        "Stay in air-conditioned spaces",
+        "Take cool showers",
+        "Wear loose-fitting clothes",
+        "Carry a water mist spray"
+      ]
+    },
+    {
+      "weather_condition": "sunny",
+      "recommendations": [
+        "Apply broad-spectrum sunscreen",
+        "Wear UV-protective clothing",
+        "Use polarized sunglasses",
+        "Wear a sun hat",
+        "Seek shade between 10AM-4PM",
+        "Stay hydrated",
+        "Use lip balm with SPF",
+        "Wear light-colored clothing",
+        "Consider sun-protective umbrella",
+        "Reapply sunscreen every 2 hours"
+      ]
+    }
+  ]
 }

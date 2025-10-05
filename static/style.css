@@ -144,6 +144,12 @@ p {
   min-height: 0;
 }
 
+@media only screen and (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+}
+
 /* Header -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 header {
   display: flex;
@@ -265,6 +271,7 @@ header button {
   min-height: 10rem;
   position: relative;
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 .probability-card i {
@@ -314,6 +321,7 @@ header button {
   min-height: 10rem;
   position: relative;
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 .main-card i {
@@ -327,6 +335,14 @@ header button {
   font-size: 2rem;
   font-weight: bold;
   margin-top: 1rem;
+}
+
+/* Hover effect */
+
+.probability-card:hover, .main-card:hover {
+  transform: translateY(-3px);
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -343,6 +359,10 @@ header button {
   height: 9.375rem;
   flex-shrink: 0;
   position: relative;
+}
+
+#risk-dot {
+  font-size: 2rem;
 }
 
 /* Dynamic gradients for risk score and cards */
