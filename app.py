@@ -4,7 +4,9 @@ from datetime import datetime
 from scipy.stats import norm
 import statistics
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -81,7 +83,7 @@ def simplify_list(data):
 @app.get('/api/rainfall_chart/<date>/<lat>/<long>')
 def rainfall_data(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/precip_24h:mm/{lat},{long}/json"
-    data = requests.get(url=url, auth=("malik_asher", "Gk3fQbD9p6FoCcAdUD0U")).json()
+    data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
     return jsonify(simplified)
 
@@ -89,21 +91,21 @@ def rainfall_data(date, lat, long):
 @app.get('/api/sunshine-data/<date>/<lat>/<long>')
 def sunshine_data(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT1H/sunshine_duration_1h:h/{lat},{long}/json"
-    data = requests.get(url=url, auth=("malik_asher", "Gk3fQbD9p6FoCcAdUD0U")).json()
+    data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
     return jsonify(simplified)
 
 @app.get('/api/temp-data/<date>/<lat>/<long>')
 def temp_data(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/t_2m:C/{lat},{long}/json"
-    data = requests.get(url=url, auth=("malik_asher", "Gk3fQbD9p6FoCcAdUD0U")).json()
+    data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
     return jsonify(simplified)
 
 @app.get('/api/wind-data/<date>/<lat>/<long>')
 def wind_data(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/wind_speed_10m:ms/{lat},{long}/json"
-    data = requests.get(url=url, auth=("malik_asher", "Gk3fQbD9p6FoCcAdUD0U")).json()
+    data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
     return jsonify(simplified)
 
