@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="../media/favicon.ico?">
+    <script src="https://cdn.plot.ly/plotly-3.1.0.min.js" charset="utf-8"></script>
 </head>
 <body>
     <div class="clouds">
@@ -22,7 +23,7 @@
     <div class="dashboard">
         <header>
             <span>
-                <h1>WeatherWisdom</h1>
+                <h1><i class="fa-solid fa-cloud-sun-rain"></i> WeatherWisdom</h1>
                 <p>Plan your outdoor events with confidence - will it rain on your parade?</p>
             </span>
            <button onclick="toggleTheme()">
@@ -60,10 +61,7 @@
                     <section class="card">
                         <h2><i class="fa-solid fa-lightbulb" style="color: var(--blue)"></i> Recommendations</h2>
                         <ul>
-                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
-                            <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptas sint ullam aliquid numquam natus, ipsum eaque</li>
-                            <li>reprehenderit dolorum tenetur ut animi sit aut nobis dolor minima, quae consequuntur ipsam!</li>
+                            <li></li>
                         </ul>
                     </section>
                 </div>
@@ -74,7 +72,7 @@
                     <div class="risk-score">
                         <p id="location-display">National College of Ireland - Campus 1ㅤ//ㅤ<span id="date-display">Day, Date</span>ㅤ//ㅤ<span id="time-display">XX:XX</span></p>               
                         <h2 id="riskClassification">[risk scale]</h2>
-                        <p id="risk-dot">🔵</p>
+                        <p id="riskDot">🔵</p>
                         <p class="total-score"><span id="riskScore"></span></p>
                     </div>
                     <div class="data-wrapper">
@@ -89,7 +87,6 @@
                                         <span id="temperatureCelsius">0</span>°C /
                                         <span id="temperatureFahrenheit">0</span>°F
                                     </span>
-                                    <span class="label"></span>
                                 </section>
                     
                                 <section class="probability-card">
@@ -100,7 +97,6 @@
                                     <span class="percentage">
                                         <span id="windSpeed">0</span> km/h
                                     </span>
-                                    <span class="label"></span>
                                 </section>
 
                                 <section class="probability-card">
@@ -111,7 +107,6 @@
                                     <span class="percentage">
                                         <span id="humidity">0</span>%
                                     </span>
-                                    <span class="label"></span>
                                 </section>
 
                                 <section class="probability-card">
@@ -122,7 +117,6 @@
                                     <span class="percentage">
                                         <span id="rainfall">0</span> mm
                                     </span>
-                                    <span class="label"></span>
                                 </section>
 
                                 <section class="probability-card">
@@ -133,7 +127,6 @@
                                     <span class="percentage">
                                         <span id="atmosphericPressure">0</span> hPa
                                     </span>
-                                    <span class="label"></span>
                                 </section>
 
                                 <section class="probability-card">
@@ -144,7 +137,6 @@
                                     <span class="percentage">
                                         <span id="comfortScore">0%</span>
                                     </span>
-                                    <span class="label"></span>
                                 </section>
                             </div>
 
@@ -159,12 +151,11 @@
                                         <span class="percentage">
                                         <span id="veryHotProb">0</span>
                                         </span>
-                                        <span class="label">Sunshine</span>
                                     </div>
 
-                                    <div class="graph-container">
-                                        <img src="" alt="Sunshine for Current Day" id="sunshineGraph">
-                                    </div>
+                                    <figure class="graph-container">
+                                        <div id="sunshineGraph" style="width:100%;height:200px;"></div>
+                                    </figure>
                                 </section>
 
         <!--- Temp -->
@@ -177,12 +168,11 @@
                                         <span class="percentage">
                                             <span id="veryColdProb">0</span>
                                         </span>
-                                        <span class="label">Temperature</span>
                                     </div>
 
-                                    <div class="graph-container">
-                                        <img src="" alt="Temperature for Current Day" id="temperatureGraph">
-                                    </div>
+                                    <figure class="graph-container">
+                                        <div id="temperatureGraph" style="width:100%;height:200px;"></div>
+                                    </figure>
                                 </section>
 
         <!--- Wind Speed --->
@@ -195,12 +185,11 @@
                                         <span class="percentage">
                                             <span id="veryWindyProb">0</span>
                                         </span>
-                                        <span class="label">Wind Speed</span>
                                     </div>
 
-                                    <div class="graph-container">
-                                        <img src="" alt="Wind Speed Graph for Current Day" id="windSpeedGraph">
-                                    </div>
+                                    <figure class="graph-container">
+                                        <div id="windGraph" style="width:100%;height:200px;"></div>
+                                    </figure>
                                 </section>
 
         <!--- Wetness --->
@@ -214,14 +203,12 @@
                                             <span class="percentage">
                                                 <span id="veryWetProb">0</span>
                                             </span>
-
-                                            <span class="label">Rainfall</span>
                                         </span>
                                     </span>
                                     
-                                    <span class="graph-container">
-                                        <img src="" alt="Rainfall Graph for Current Day" id="rainfallGraph">
-                                    </span>
+                                    <figure class="graph-container">
+                                        <div id="rainfallGraph" style="width:100%;height:200px;"></div>
+                                    </figure>
                                 </section>
                             </div>
                         </div>
@@ -231,7 +218,7 @@
         </div>
 
         <footer>
-            <p>ExamReady - Keith Gamier, Asher Malik, Billy Chan, Matas Roda, and Vinzel Ferrer | For the 2025 <a href="https://www.spaceappschallenge.org/">NASA Space Apps Challenge</a></p>
+            <p><a href="https://github.com/TheRealSouls/spaceapps-2025" target="_blank" rel="noopener noreferrer" style="margin-right: 0.25rem;"><i class="fa-brands fa-github"></i></a> ExamReady - Keith Gamier, Asher Malik, Billy Chan, Matas Roda, and Vinzel Ferrer | For the 2025 <a href="https://www.spaceappschallenge.org/">NASA Space Apps Challenge</a></p>
         </footer>
     </div>
     <script src="../static/script.js"></script>

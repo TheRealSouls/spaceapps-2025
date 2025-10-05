@@ -342,7 +342,7 @@ header button {
 .probability-card:hover, .main-card:hover {
   transform: translateY(-3px);
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -361,44 +361,45 @@ header button {
   position: relative;
 }
 
-#risk-dot {
+#riskDot {
   font-size: 2rem;
 }
 
 /* Dynamic gradients for risk score and cards */
 
-.very-low-risk {
+.main-card.very-low-risk, .risk-score.very-low-risk {
   background: linear-gradient(135deg, 
   #1a2a6c 0%, 
   #2b5876 50%, 
-  #4e4376 100%);
+  #4e4376 100%) !important;
+  color: #f1f1f1 !important;
 }
 
-.low-risk {  
+.main-card.low-risk, .risk-score.low-risk {  
   background: linear-gradient(135deg, 
   rgba(20, 90, 50, 0.9) 0%,
   rgba(60, 170, 100, 0.8) 50%,
   rgba(160, 230, 170, 0.6) 100%
-  );
-  color: #f1f1f1;
+  ) !important;
+  color: #f1f1f1 !important;
 }
 
-.medium-risk {
+.main-card.medium-risk .risk-score.medium-risk {
   background: linear-gradient(135deg,
   rgba(180, 160, 50, 0.9) 0%,
   rgba(235, 210, 100, 0.8) 50%,
   rgba(255, 240, 180, 0.6) 100%
-  );
-  color: #f1f1f1;
+  ) !important;
+  color: #f1f1f1 !important;
 }
 
-.high-risk {
+.main-card.high-risk, .risk-score.high-risk {
   background: linear-gradient(135deg,
   rgba(170, 50, 50, 0.9) 0%,
   rgba(220, 80, 80, 0.8) 50%,
   rgba(225, 180, 180, 0.6) 100%
-  );
-  color: #f1f1f1;
+  ) !important;
+  color: #f1f1f1 !important;
 }
 
 #location-display {

@@ -199,18 +199,11 @@ function updateEverything() {
                 lng);
     
     getCurrentWeatherData(date, time, lat, lng);
-
-    document.getElementById("sunshineGraph").src = `/api/sunshine-data/${date}/${lat}/${lng}`;
-    document.getElementById("temperatureGraph").src = `/api/temp-data/${date}/${lat}/${lng}`;
-    document.getElementById("windGraph").src = `/api/wind-data/${date}/${lat}/${lng}`;
-    document.getElementById("rainfallGraph").src = `/api/rainfall-chart/${date}/${lat}/${lng}`;
     
-    /*
     loadSunshineGraph(date, lat, lng);
     loadTemperatureGraph(date, lat, lng);
     loadWindGraph(date, lat, lng);
     loadRainfallGraph(date, lat, lng);
-    */
 }
 
 function getBestLocationName(data, lat, lng) {
@@ -387,69 +380,126 @@ async function getCurrentWeatherData(date, time, lat, lng) {
     }
 }
 
-/* Graphs
+async function loadRainfallGraph(date, lat, lng) {
+    const response = await fetch(`/api/rainfall_chart/${date}/${lat}/${lng}`);
+    const data = await response.json();
 
-async function loadSunshineGraph(date, lat, lng) {
-    try {
-        const response = await fetch(`/api/sunshine-data/${date}/${lat}/${lng}`);
-        const data = await response.json();
+    const trace = {
+        x: data.x,
+        y: data.y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: '#1f77b4', width: 2 },
+        marker: { size: 5 }
+    };
 
-        if (data.image) {
-            const imgElement = document.getElementById("sunshineGraph");
-            imgElement.src = `data:image/jpeg;base64,${data.image}`;
-        } else {
-            console.error("No image data returned from API");
-        }
-    } catch (error) {
-        console.error("Error fetching sunshine graph:", error);
-    }
+    const layout = {
+        title: {
+            text: 'Rainfall (mm)',
+            font: { color: '#ffffff', size: 20 },
+            xref: 'paper',
+            x: 0.5
+        },
+        xaxis: { title: 'Time' },
+        yaxis: { title: 'Rainfall (mm)' },
+        margin: { t: 40, l: 50, r: 20, b: 40 },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#ddd' }
+    };
+
+    Plotly.newPlot('rainfallGraph', [trace], layout, { displayModeBar: false, responsive: true });
 }
 
 async function loadTemperatureGraph(date, lat, lng) {
-    try {
-        const response = await fetch(`/api/temp-data/${date}/${lat}/${lng}`);
-        const data = await response.json();
+    const response = await fetch(`/api/temp-data/${date}/${lat}/${lng}`);
+    const data = await response.json();
 
-        if (data.image) {
-            const imgElement = document.getElementById("tempGraph");
-            imgElement.src = `data:image/jpeg;base64,${data.image}`;
-        } else {
-            console.error("No image data returned from API");
-        }
-    } catch (error) {
-        console.error("Error fetching temperature graph:", error);
-    }
+    const trace = {
+        x: data.x,
+        y: data.y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: 'crimson', width: 2 },
+        marker: { size: 5 }
+    };
+
+    const layout = {
+        title: {
+            text: 'Temperature (°C)',
+            font: { color: '#ffffff', size: 20 },
+            xref: 'paper',
+            x: 0.5
+        },
+        xaxis: { title: 'Time' },
+        yaxis: { title: 'Temperature (°C)' },
+        margin: { t: 80, l: 50, r: 20, b: 40 },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#ddd' }
+    };
+
+    Plotly.newPlot('temperatureGraph', [trace], layout, { displayModeBar: false, responsive: true });
+}
+
+async function loadSunshineGraph(date, lat, lng) {
+    const response = await fetch(`/api/sunshine-data/${date}/${lat}/${lng}`);
+    const data = await response.json();
+
+    const trace = {
+        x: data.x,
+        y: data.y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: 'orange', width: 2 },
+        marker: { size: 5 }
+    };
+
+    const layout = {
+        title: {
+            text: 'Sunshine Duration (hours)',
+            font: { color: '#ffffff', size: 20 },
+            xref: 'paper',
+            x: 0.5
+        },
+        xaxis: { title: 'Time' },
+        yaxis: { title: 'Sunshine (h)' },
+        margin: { t: 40, l: 50, r: 20, b: 40 },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#ddd' }
+    };
+
+    Plotly.newPlot('sunshineGraph', [trace], layout, { displayModeBar: false, responsive: true });
 }
 
 async function loadWindGraph(date, lat, lng) {
-    try {
-        const response = await fetch(`/api/wind-data/${date}/${lat}/${lng}`);
-        const data = await response.json();
+    const response = await fetch(`/api/wind-data/${date}/${lat}/${lng}`);
+    const data = await response.json();
 
-        if (data.image) {
-            const imgElement = document.getElementById("windGraph");
-            imgElement.src = `data:image/jpeg;base64,${data.image}`;
-        } else {
-            console.error("No image data returned from API");
-        }
-    } catch (error) {
-        console.error("Error fetching wind graph:", error);
-    }
+    const trace = {
+        x: data.x,
+        y: data.y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        line: { color: 'grey', width: 2 },
+        marker: { size: 5 }
+    };
+
+    const layout = {
+        title: {
+            text: 'Wind Speed (m/s)',
+            font: { color: '#ffffff', size: 20 },
+            xref: 'paper',
+            x: 0.5
+        },
+        xaxis: { title: 'Time' },
+        yaxis: { title: 'Wind Speed (m/s)' },
+        margin: { t: 40, l: 50, r: 20, b: 40 },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#ddd' }
+    };
+
+    Plotly.newPlot('windGraph', [trace], layout, { displayModeBar: false, responsive: true });
 }
-
-async function loadRainfallGraph(date, lat, lng) {
-    try {
-        const response = await fetch(`/api/rainfall_chart/${date}/${lat}/${lng}`);
-        const data = await response.json();
-
-        if (data.image) {
-            const imgElement = document.getElementById("rainfallGraph");
-            imgElement.src = `data:image/jpeg;base64,${data.image}`;
-        } else {
-            console.error("No image data returned from API");
-        }
-    } catch (error) {
-        console.error("Error fetching rainfall graph:", error);
-    }
-}
-*/

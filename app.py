@@ -73,7 +73,8 @@ def weather_prediction(date, time, lat, long):
     except ZeroDivisionError:
         probability_very_wet = 0
 
-    risk_score = round((probability_very_hot + probability_very_cold + probability_very_windy + probability_very_wet)/4, 2)
+    probability_list = [probability_very_hot, probability_very_cold, probability_very_windy, probability_very_wet]
+    risk_score = round(max(probability_list), 2)
     comfort_score = 100 - risk_score
 
     return jsonify({'data': {'very_hot': str(probability_very_hot)+"%", 'very_cold': str(probability_very_cold)+"%", 'very_windy': str(probability_very_windy)+"%", 'very_wet': str(probability_very_wet)+"%",
@@ -155,8 +156,7 @@ def rainfall_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    buf = plot_graph(xlabel="Time", ylabel="Rainfall (mm)", color='blue', x=x, y=y)
-    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='rainfall-graph.png')
+    return jsonify({"x":x, "y":y})
     #return send_file(img_bytes, mimetype='image/png')
 
 
@@ -174,8 +174,9 @@ def sunshine_graph(date, lat, long):
     #img_bytes = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
     #return jsonify({"image": img_base64})
     #return send_file(img_bytes, mimetype='image/png')
-    buf = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
-    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='sunshine.png')
+    #buf = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
+    return jsonify({"x":x, "y":y})
+    #return send_file(buf, mimetype='image/png', as_attachment=False, download_name='sunshine.png')
 
 @app.get('/api/temp-data/<date>/<lat>/<long>')
 def temp_graph(date, lat, long):
@@ -191,8 +192,9 @@ def temp_graph(date, lat, long):
     #img_bytes = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
     #return jsonify({"image": img_base64})
     #return send_file(img_bytes, mimetype='image/png')
-    buf = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
-    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='temperature-graph.png')
+    #buf = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
+    #return send_file(buf, mimetype='image/png', as_attachment=False, download_name='temperature-graph.png')
+    return jsonify({"x":x, "y":y})
 
 @app.get('/api/wind-data/<date>/<lat>/<long>')
 def wind_graph(date, lat, long):
@@ -207,8 +209,9 @@ def wind_graph(date, lat, long):
     #img_base64 = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
     #return jsonify({"image": img_base64})
 
-    buf = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
-    return send_file(buf, mimetype='image/png', as_attachment=False, download_name='Wind-graph.png')
+    #buf = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
+    #return send_file(buf, mimetype='image/png', as_attachment=False, download_name='Wind-graph.png')
+    return jsonify({"x":x, "y":y})
     
 
 
