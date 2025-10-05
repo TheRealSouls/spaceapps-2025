@@ -9,6 +9,7 @@ const rainfall = document.getElementById("rainfall");
 const atmosphericPressure = document.getElementById("atmosphericPressure");
 
 const riskScore = document.getElementById("riskScore");
+const comfortScore = document.getElementById("comfortScore");
 
 let veryHotProb = document.getElementById("veryHotProb");
 let veryColdProb = document.getElementById("veryColdProb");
@@ -114,7 +115,6 @@ function initialiseMainScrollIndicator() {
     console.log('Data panel scroll height:', dataPanel.scrollHeight, 'Client height:', dataPanel.clientHeight);
 
     dataPanel.addEventListener('scroll', function() {
-        console.log('Main panel scroll - Top:', this.scrollTop, 'Scrolled:', this.scrollTop > 1);
         
         if (this.scrollTop > 10) {
             this.classList.add('scrolled');
@@ -197,7 +197,13 @@ function updateEverything() {
     getRiskScores(document.getElementById("eventDate").value, 
                 document.getElementById("appt").value, 
                 lat, 
-                lng)
+                lng);
+    
+    getCurrentWeatherData(date, time, lat, lng);
+    
+    loadSunshineGraph(date, lat, lng);
+    loadTemperatureGraph(date, lat, lng);
+    loadRainfallGraph(date, lat, lng);
 }
 
 function getBestLocationName(data, lat, lng) {
@@ -268,9 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initialiseMainScrollIndicator();
     initialiseDateTime();
     createClouds();
-    
-    // REMOVED: updateEverything(); 
-    // Data is now only updated when the "Go" button calls updateEverything()
+
+    setTimeout(() => {
+        updateEverything();
+    }, 100);
 });
 
 /* Notes -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
@@ -293,12 +300,93 @@ async function getRiskScores(date, time, lat, lng) {
         veryWindyProb.innerText = data.data.very_windy;
         veryWetProb.innerText = data.data.very_wet;
 
-        riskScore.innerText = data.data.comfort;
+        riskScore.innerText = data.data.risk_score;
+        comfortScore.innerText = data.data.comfort_score;
     } catch (err) {
         console.error(err);
     }
 }
 
-// TODO: add rainfall graph
+async function getCurrentWeatherData(date, time, lat, lng) {
+    const url = `/api/current-data/${date}/${time}/${lat}/${lng}`;
 
-getRiskScores("2025-10-05", "14:30", 52.3489, -6.2430);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const data = await response.json();
+        console.log("Current weather data:", data);
+
+        const tempC = data["t_2m:C"];
+        const wind = data["wind_speed_10m:ms"];
+        const humidityVal = data["absolute_humidity_2m:gm3"];
+        const rain = data["precip_24h:mm"];
+        const pressure = data["msl_pressure:hPa"];
+
+        temperatureCelsius.innerText = tempC.toFixed(1);
+        temperatureFahrenheit.innerText = (tempC * 9/5 + 32).toFixed(1);
+        windSpeed.innerText = wind.toFixed(1);
+        humidity.innerText = humidityVal.toFixed(1);
+        rainfall.innerText = rain.toFixed(1);
+        atmosphericPressure.innerText = pressure.toFixed(1);
+
+    } catch (error) {
+        console.error("Error fetching current weather data:", error);
+    }
+}
+
+
+
+
+
+
+
+
+/* Graphs */
+
+async function loadSunshineGraph(date, lat, lng) {
+    try {
+        const response = await fetch(`/api/sunshine-data/${date}/${lat}/${lng}`);
+        const data = await response.json();
+
+        if (data.image) {
+            const imgElement = document.getElementById("sunshineGraph");
+            imgElement.src = `data:image/png;base64,${data.image}`;
+        } else {
+            console.error("No image data returned from API");
+        }
+    } catch (error) {
+        console.error("Error fetching sunshine graph:", error);
+    }
+}
+
+async function loadTemperatureGraph(date, lat, lng) {
+    try {
+        const response = await fetch(`/api/temp-data/${date}/${lat}/${lng}`);
+        const data = await response.json();
+
+        if (data.image) {
+            const imgElement = document.getElementById("temperatureGraph");
+            imgElement.src = `data:image/png;base64,${data.image}`;
+        } else {
+            console.error("No image data returned from API");
+        }
+    } catch (error) {
+        console.error("Error fetching temperature graph:", error);
+    }
+}
+
+async function loadRainfallGraph(date, lat, lng) {
+    try {
+        const response = await fetch(`/api/rainfall_chart/${date}/${lat}/${lng}`);
+        const data = await response.json();
+
+        if (data.image) {
+            const imgElement = document.getElementById("rainfallGraph");
+            imgElement.src = `data:image/png;base64,${data.image}`;
+        } else {
+            console.error("No image data returned from API");
+        }
+    } catch (error) {
+        console.error("Error fetching rainfall graph:", error);
+    }
+}

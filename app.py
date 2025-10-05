@@ -79,6 +79,10 @@ def simplify_list(data):
             # Extract just the time
             dt = datetime.fromisoformat(v["date"].replace("Z", "+00:00"))
             time_str = dt.strftime("%H:%M:%S")
+
+            if time_str.endswith(":00"):
+                time_str = time_str[:-3]
+
             simplified.append({
                 "time": time_str,
                 "value": round(v["value"], 2) 
@@ -100,6 +104,35 @@ def get_current_data(date, time, lat, long):
     return simplify_list
 
 
+def plot_graph(xlabel, ylabel, color, x, y):
+    plt.figure()
+    plt.plot(x, y, color=color)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.ylim(bottom=0)
+
+    # Format x-axis for readability
+    step = 4
+    plt.xticks(rotation=45, ha='right', ticks=range(0, len(x), step), labels=[x[i] for i in range(0, len(x), step)],)
+    plt.tight_layout()  # ensures labels fit nicely
+    plt.grid(True, linestyle='--', alpha=0.5)
+
+    #Save it to a bytes buffer
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+    plt.close()
+
+    # Save to BytesIO instead of file
+    # img_bytes = io.BytesIO()
+    # plt.savefig(img_bytes, format="png")
+    # img_bytes.seek(0)
+    # plt.close()
+
+    # Encode image to base64
+    img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+    return img_base64
+
 @app.get('/api/rainfall_chart/<date>/<lat>/<long>')
 def rainfall_graph(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/precip_24h:mm/{lat},{long}/json"
@@ -110,21 +143,9 @@ def rainfall_graph(date, lat, long):
     for data in simplified:
         x.append(data['time'])
         y.append(data['value'])
-    print(x)
-    print(y)
-    plt.figure()
-    plt.plot(x, y)
-    plt.xlabel("Time")
-    plt.ylabel("Rainfall (mm)")
-    # Save it to a bytes buffer
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png")
-    buf.seek(0)
-    plt.close()
-
-    # Encode image to base64
-    img_base64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+    img_base64 = plot_graph(xlabel="Time", ylabel="Rainfall (mm)", color='blue', x=x, y=y)
     return jsonify({"image": img_base64})
+    #return send_file(img_bytes, mimetype='image/png')
 
 
 @app.get('/api/sunshine-data/<date>/<lat>/<long>')
@@ -132,21 +153,39 @@ def sunshine_graph(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT1H/sunshine_duration_1h:h/{lat},{long}/json"
     data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
-    return jsonify(simplified)
+    x = []
+    y = []
+    for data in simplified:
+        x.append(data['time'])
+        y.append(data['value'])
+    img_base64 = plot_graph(xlabel="Time", ylabel="Sunshine Duration (h)", color='orange', x=x, y=y)
+    return jsonify({"image": img_base64})
 
 @app.get('/api/temp-data/<date>/<lat>/<long>')
 def temp_graph(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/t_2m:C/{lat},{long}/json"
     data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
-    return jsonify(simplified)
+    x = []
+    y = []
+    for data in simplified:
+        x.append(data['time'])
+        y.append(data['value'])
+    img_base64 = plot_graph(xlabel="Time", ylabel="Temperature (°C)", color='crimson', x=x, y=y)
+    return jsonify({"image": img_base64})
 
 @app.get('/api/wind-data/<date>/<lat>/<long>')
 def wind_graph(date, lat, long):
     url = f"https://api.meteomatics.com/{date}T00:00:00Z--{date}T23:59:59Z:PT30M/wind_speed_10m:ms/{lat},{long}/json"
     data = requests.get(url=url, auth=(os.getenv("METEOMATICS_USERNAME"), os.getenv("METEOMATICS_PASSWORD"))).json()
     simplified = simplify_list(data)
-    return jsonify(simplified)
+    x = []
+    y = []
+    for data in simplified:
+        x.append(data['time'])
+        y.append(data['value'])
+    img_base64 = plot_graph(xlabel="Time", ylabel="Wind Speed (m/s)", color='grey', x=x, y=y)
+    return jsonify({"image": img_base64})
 
 
 if __name__ == '__main__':

@@ -138,71 +138,90 @@
 
                                 <section class="probability-card">
                                     <span>
-                                        <i class="fa-solid fa-face-tired"></i>
+                                        <i class="fa-solid fa-heart"></i>
                                         <h4>Comfort</h4>
                                     </span>
                                     <span class="percentage">
-                                        <span id="atmosphericPressure">0</span>%
+                                        <span id="comfortScore">0%</span>
                                     </span>
                                     <span class="label"></span>
                                 </section>
                             </div>
 
+        <!--- Atmo Pressure -->
                             <div class="event-probabilities">
                                 <section class="main-card low-risk">
-                                    <span>
-                                        <i class="fa-solid fa-tornado"></i>
-                                        <h4>Very Hot</h4>
-                                    </span>
-                                    <span class="percentage">
-                                    <span id="veryHotProb">0</span>
-                                    </span>
-                                    <span class="label"></span>
-                                </section>
-                                <section class="main-card medium-risk">
-                                    <span>
-                                        <i class="fa-solid fa-snowflake"></i>
-                                        <h4>Very Cold</h4>
-                                    </span>
-                                    <span class="percentage">
-                                        <span id="veryColdProb">0</span>
-                                    </span>
-                                    <span class="label"></span>
-                                </section>
-                                <section class="main-card high-risk">
-                                    <span>
-                                        <i class="fa-solid fa-wind"></i>
-                                        <h4>Very Windy</h4>
-                                    </span>
-                                    <span class="percentage">
-                                        <span id="veryWindyProb">0</span>
-                                    </span>
-                                    <span class="label"></span>
-                                </section>
-                                <section class="main-card">
                                     <div class="probability-description">
                                         <span>
-                                            <i class="fa-solid fa-water"></i>
-                                            <h4>Very Wet</h4>
+                                            <i class="fa-solid fa-tornado"></i>
+                                            <h4>Very Hot</h4>
                                         </span>
                                         <span class="percentage">
-                                            <span id="veryWetProb">0</span>
+                                        <span id="veryHotProb">0</span>
                                         </span>
-                                        <span class="label"></span>
+                                        <span class="label">Sunshine</span>
                                     </div>
+
                                     <div class="graph-container">
-                                        <img src="" alt="Rainfall Graph for Current Day" id="rainfallGraph">
+                                        <img src="" alt="Sunshine for Current Day" id="sunshineGraph">
                                     </div>
                                 </section>
+
+        <!--- Temp -->
+                                <section class="main-card medium-risk">
+                                    <div class="probability-description">
+                                        <span>
+                                            <i class="fa-solid fa-snowflake"></i>
+                                            <h4>Very Cold</h4>
+                                        </span>
+                                        <span class="percentage">
+                                            <span id="veryColdProb">0</span>
+                                        </span>
+                                        <span class="label">Temperature</span>
+                                    </div>
+
+                                    <div class="graph-container">
+                                        <img src="" alt="Temperature for Current Day" id="temperatureGraph">
+                                    </div>
+                                </section>
+
+        <!--- Wind Speed --->
+                                <section class="main-card high-risk">
+                                    <div class="probability-description">
+                                        <span>
+                                            <i class="fa-solid fa-wind"></i>
+                                            <h4>Very Windy</h4>
+                                        </span>
+                                        <span class="percentage">
+                                            <span id="veryWindyProb">0</span>
+                                        </span>
+                                        <span class="label">Wind Speed</span>
+                                    </div>
+
+                                    <div class="graph-container">
+                                        <img src="" alt="Wind Speed Graph for Current Day" id="windSpeedGraph">
+                                    </div>
+                                </section>
+
+        <!--- Wetness --->
                                 <section class="main-card">
-                                    <span>
-                                        <i class="fa-solid fa-face-tired"></i>
-                                        <h4>Very Uncomfortable</h4>
+                                    <span class="probability-description">
+                                        <span>
+                                            <i class="fa-solid fa-water"></i>
+                                                <h4>Very Wet</h4>
+                                            </span>
+
+                                            <span class="percentage">
+                                                <span id="veryWetProb">0</span>
+                                            </span>
+
+                                            <span class="label">Rainfall</span>
+                                        </span>
                                     </span>
-                                    <span class="percentage">
-                                        <span id="veryUncomfortableProb">0</span>
+                                    
+                                    <span class="graph-container">
+                                        <img src="" alt="Rainfall Graph for Current Day" id="rainfallGraph">
                                     </span>
-                                    <span class="label"></span>
                                 </section>
 
                             </div>
