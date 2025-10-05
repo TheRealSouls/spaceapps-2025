@@ -73,140 +73,146 @@
                 <div class="data-content">
                     <div class="risk-score">
                         <p id="location-display">National College of Ireland - Campus 1ㅤ//ㅤ<span id="date-display">Day, Date</span>ㅤ//ㅤ<span id="time-display">XX:XX</span></p>               
-                        <h2>Moderate Risk</h2>
+                        <h2 id="riskClassification">[risk scale]</h2>
                         <p>Some adverse conditions possible, plan accordingly.</p>
-                        <p class="total-score"><span id="riskScore">45</span> /100</p>
+                        <p class="total-score"><span id="riskScore"></span></p>
                     </div>
-
-                    <div class="data-scrollable">
-                        <div class="weather-details">
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-temperature-full"></i>
-                                    <h4>Temperature</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="temperatureCelsius"></span>°C /
-                                    <span id="temperatureFahrenheit"></span>°F
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                    <div class="data-wrapper">
+                        <div class="data-scrollable">
+                            <div class="weather-details">
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-temperature-full"></i>
+                                        <h4>Temperature</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="temperatureCelsius">0</span>°C /
+                                        <span id="temperatureFahrenheit">0</span>°F
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
                     
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-wind"></i>
-                                    <h4>Wind Speed</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="windSpeed">0</span> km/h
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-wind"></i>
+                                        <h4>Wind Speed</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="windSpeed">0</span> km/h
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
 
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-droplet"></i>
-                                    <h4>Humidity</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="humidity">0</span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-droplet"></i>
+                                        <h4>Humidity</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="humidity">0</span>%
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
 
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-droplet"></i>
-                                    <h4>Rain</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="rainfall">0</span> mm
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-droplet"></i>
+                                        <h4>Rain</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="rainfall">0</span> mm
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
 
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Atmospheric Pressure</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span> hPa
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-tornado"></i>
+                                        <h4>Atmospheric Pressure</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="atmosphericPressure">0</span> hPa
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
 
-                            <section class="probability-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Atmospheric Pressure</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span> hPa
-                                </span>
-                                <span class="label"></span>
-                            </section>
-                        </div>
+                                <section class="probability-card">
+                                    <span>
+                                        <i class="fa-solid fa-face-tired"></i>
+                                        <h4>Comfort</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="atmosphericPressure">0</span>%
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
+                            </div>
 
-                        <div class="event-probabilities">
-                            <section class="main-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Very Hot</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
-                            <section class="main-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Very Hot</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
-                            <section class="main-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Very Hot</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
-                            <section class="main-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Very Hot</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
-                            <section class="main-card">
-                                <span>
-                                    <i class="fa-solid fa-tornado"></i>
-                                    <h4>Very Hot</h4>
-                                </span>
-                                <span class="percentage">
-                                    <span id="atmosphericPressure"></span>%
-                                </span>
-                                <span class="label"></span>
-                            </section>
+                            <div class="event-probabilities">
+                                <section class="main-card low-risk">
+                                    <span>
+                                        <i class="fa-solid fa-tornado"></i>
+                                        <h4>Very Hot</h4>
+                                    </span>
+                                    <span class="percentage">
+                                    <span id="veryHotProb">0</span>
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
+                                <section class="main-card medium-risk">
+                                    <span>
+                                        <i class="fa-solid fa-snowflake"></i>
+                                        <h4>Very Cold</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="veryColdProb">0</span>
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
+                                <section class="main-card high-risk">
+                                    <span>
+                                        <i class="fa-solid fa-wind"></i>
+                                        <h4>Very Windy</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="veryWindyProb">0</span>
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
+                                <section class="main-card">
+                                    <div class="probability-description">
+                                        <span>
+                                            <i class="fa-solid fa-water"></i>
+                                            <h4>Very Wet</h4>
+                                        </span>
+                                        <span class="percentage">
+                                            <span id="veryWetProb">0</span>
+                                        </span>
+                                        <span class="label"></span>
+                                    </div>
+                                    <div class="graph-container">
+                                        <img src="" alt="Rainfall Graph for Current Day" id="rainfallGraph">
+                                    </div>
+                                </section>
+                                <section class="main-card">
+                                    <span>
+                                        <i class="fa-solid fa-face-tired"></i>
+                                        <h4>Very Uncomfortable</h4>
+                                    </span>
+                                    <span class="percentage">
+                                        <span id="veryUncomfortableProb">0</span>
+                                    </span>
+                                    <span class="label"></span>
+                                </section>
 
-                        </div>
+                            </div>
 
-                        <div class="charts">
-                            <h2>Weather Patterns</h2>
-                            <section>
-                                <!--TODO: charts showing previous data-->
-                            </section>
+                            <div class="charts">
+                                <h2>Weather Patterns</h2>
+                                <section class="main-card">
+                                    
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,21 @@
 /* DOM Elements -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 const themeIcon = document.getElementById("theme-icon");
+
 const temperatureCelsius = document.getElementById("temperatureCelsius");
 const temperatureFahrenheit = document.getElementById("temperatureFahrenheit");
 const windSpeed = document.getElementById("windSpeed");
 const humidity = document.getElementById("humidity");
 const rainfall = document.getElementById("rainfall");
 const atmosphericPressure = document.getElementById("atmosphericPressure");
+
 const riskScore = document.getElementById("riskScore");
+
+let veryHotProb = document.getElementById("veryHotProb");
+let veryColdProb = document.getElementById("veryColdProb");
+let veryWindyProb = document.getElementById("veryWindyProb");
+let veryWetProb = document.getElementById("veryWetProb");
+let veryUncomfortableProb = document.getElementById("veryUncomfortableProb");
+
 
 /* Theme Toggle -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 const toggleTheme = () => {
@@ -16,6 +25,18 @@ const toggleTheme = () => {
         themeIcon.classList.replace("fa-sun", "fa-moon");
     } else {
         themeIcon.classList.replace("fa-moon", "fa-sun");
+    }
+}
+
+/* Grab recomms -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+async function loadSentences() {
+    try {
+        const response = await fetch('sentences.json');
+        const data = await response.json();
+        return data.sentences;
+    } catch (error) {
+        console.error('Error loading sentences:', error);
+        return [];
     }
 }
 
@@ -33,7 +54,7 @@ map.on('click', function(e) {
     const lat = e.latlng.lat;
     const lng = e.latlng.lng;
     marker.setLatLng([lat, lng]);
-    // REMOVED: updateEverything(); 
+    // REMOVED: updateEverything();
 });
 
 function handleSearchEnter(event) {
@@ -56,7 +77,6 @@ function searchLocation() {
                 const lon = parseFloat(result.lon);
                 map.setView([lat, lon], 13);
                 marker.setLatLng([lat, lon]);
-                // REMOVED: updateEverything(); 
             } else {
                 alert('Location not found. Please try a different search term.');
             }
@@ -85,20 +105,26 @@ function initialiseScrollIndicator() {
 
 /* Main scroll indicator -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 function initialiseMainScrollIndicator() {
-    const dataPanel = document.querySelector('.data-panel');
+    const dataPanel = document.querySelector('.data-scrollable');
     const indicator = document.createElement('div');
     indicator.className = 'scroll-indicator';
     dataPanel.appendChild(indicator);
 
+    console.log('Main scroll indicator initialized on:', dataPanel);
+    console.log('Data panel scroll height:', dataPanel.scrollHeight, 'Client height:', dataPanel.clientHeight);
+
     dataPanel.addEventListener('scroll', function() {
+        console.log('Main panel scroll - Top:', this.scrollTop, 'Scrolled:', this.scrollTop > 1);
+        
         if (this.scrollTop > 10) {
             this.classList.add('scrolled');
+            console.log('Added scrolled class');
         } else {
             this.classList.remove('scrolled');
+            console.log('Removed scrolled class');
         }
     });
 }
-
 
 /* Date/time -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 function initialiseDateTime() {
@@ -167,6 +193,11 @@ function updateEverything() {
         updateDisplayWithLocation(`Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`);
         getResponse(lat, lng);
     });
+
+    getRiskScores(document.getElementById("eventDate").value, 
+                document.getElementById("appt").value, 
+                lat, 
+                lng)
 }
 
 function getBestLocationName(data, lat, lng) {
@@ -207,7 +238,7 @@ function createClouds() {
     const container = document.querySelector('.clouds');
     const maxWidth = window.innerWidth;
 
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 15; i++) {
         const cloud = document.createElement('div');
         cloud.classList.add('cloud');
 
@@ -234,6 +265,7 @@ function createClouds() {
 /* Initialisation -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 document.addEventListener('DOMContentLoaded', function() {
     initialiseScrollIndicator();
+    initialiseMainScrollIndicator();
     initialiseDateTime();
     createClouds();
     
@@ -242,4 +274,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* Notes -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-function getResponse(lat, lng) { /* Placeholder function */ }
+const getResponse = (lat, lng) => {  //getReponse referenced but not defined
+    /* Placeholder */
+}
+
+async function getRiskScores(date, time, lat, lng) {
+    const url = `/api/weather-prediction/${date}/${time}/${lat}/${lng}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+        const data = await response.json();
+        console.log(data.data);
+
+        veryHotProb.innerText = data.data.very_hot
+        veryColdProb.innerText = data.data.very_cold;
+        veryWindyProb.innerText = data.data.very_windy;
+        veryWetProb.innerText = data.data.very_wet;
+
+        riskScore.innerText = data.data.comfort;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+// TODO: add rainfall graph
+
+getRiskScores("2025-10-05", "14:30", 52.3489, -6.2430);

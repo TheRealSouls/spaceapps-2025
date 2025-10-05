@@ -67,6 +67,7 @@ h1 {
 h2 {
   font-size: 1.1rem;
   margin-bottom: 0.3125rem;
+  white-space: nowrap;
 }
 
 p {
@@ -171,7 +172,7 @@ header button {
 }
 
 .sidebar {
-  padding: 0;
+  padding: 0.14rem;
   display: flex;
   flex-direction: column;
   min-height: 0; 
@@ -213,6 +214,13 @@ header button {
   overflow: hidden;
 }
 
+.data-wrapper {
+  flex: 0 0 18.75rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 73.305%;
+}
+
 .data-content {
   flex-grow: 1;
   display: flex;
@@ -222,14 +230,16 @@ header button {
 }
 
 .data-scrollable {
-  flex-grow: 1;
+  padding: 0.14rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; 
   overflow-y: auto;
-  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  position: relative;
-  padding: 6px;
+  height: 100%;
 }
+
 
 .data-scrollable::-webkit-scrollbar {
   display: none;
@@ -296,6 +306,7 @@ header button {
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: var(--light-gray);
+  color: var(--color-text-light);
   border-radius: 0.5rem;
   border: 1px solid #64666A;
   padding: var(--padding-base);
@@ -307,6 +318,7 @@ header button {
 
 .main-card i {
   background-color: var(--light-gray-2);
+  color: var(--color-text-light);
   padding: 0.75rem;
   border-radius: 0.5rem;
 }
@@ -316,6 +328,7 @@ header button {
   font-weight: bold;
   margin-top: 1rem;
 }
+
 
 /* Risk Score -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 .risk-score {
@@ -330,6 +343,39 @@ header button {
   height: 9.375rem;
   flex-shrink: 0;
   position: relative;
+}
+
+/* Dynamic gradients for risk score and cards */
+
+.low-risk {  
+  background: linear-gradient(135deg, 
+  rgba(20, 90, 50, 0.9) 0%,
+  rgba(60, 170, 100, 0.8) 50%,
+  rgba(160, 230, 170, 0.6) 100%
+  );
+  color: #f1f1f1;
+}
+
+.medium-risk {
+  background: linear-gradient(135deg,
+  rgba(180, 160, 50, 0.9) 0%,
+  rgba(235, 210, 100, 0.8) 50%,
+  rgba(255, 240, 180, 0.6) 100%
+  );
+  color: #f1f1f1;
+}
+
+.high-risk {
+  background: linear-gradient(135deg,
+  rgba(170, 50, 50, 0.9) 0%,
+  rgba(220, 80, 80, 0.8) 50%,
+  rgba(225, 180, 180, 0.6) 100%
+  );
+  color: #f1f1f1;
+}
+
+#location-display {
+  width: 90%;
 }
 
 .total-score {
@@ -444,11 +490,11 @@ ul li::marker {
 /* Scroll Indicator -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 .scroll-indicator {
   position: absolute;
-  bottom: 20px;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  aspect-ratio: 1;
   background-color: var(--gray);
   border: 1px solid var(--color-text-dim);
   border-radius: 50%;
@@ -458,17 +504,32 @@ ul li::marker {
   opacity: 1;
   transition: opacity 0.3s ease;
   pointer-events: none;
-  z-index: 20;
+  z-index: 21;
+  animation: MoveUpDown 1s linear infinite;
+  margin-bottom: 0.25rem;
 }
 
 .scroll-indicator::after {
   content: "↓";
   color: var(--color-text-light);
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .sidebar.scrolled .scroll-indicator {
   opacity: 0;
+}
+
+.data-scrollable.scrolled .scroll-indicator {
+  opacity: 0;
+}
+
+@keyframes MoveUpDown {
+  0%, 100% {
+    bottom: 7px;
+  }
+  50% {
+    bottom: 0px;
+  }
 }
 
 /* Footer -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
